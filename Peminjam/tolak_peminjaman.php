@@ -12,7 +12,7 @@ if ($data) {
     mysqli_query($koneksi, "INSERT INTO tbl_history 
         (id_peminjaman, id, id_buku, status, admin) 
         VALUES (
-            '{$data['id_peminjaman']}',
+            '{$data['id_peminjaman']}', 
             '{$data['id']}',
             '{$data['id_buku']}',
             -- '{$data['tanggal_pinjam']}',
