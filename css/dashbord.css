@@ -1,0 +1,80 @@
+/* Reset dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Background halaman */
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #4f9cff, #6dd5ed);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card dashboard */
+.dashboard {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    padding: 25px 30px;
+    border-radius: 16px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+/* Judul */
+.dashboard h2 {
+    text-align: center;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.dashboard h3 {
+    text-align: center;
+    font-weight: 500;
+    color: #4f9cff;
+    margin-bottom: 20px;
+}
+
+/* Biodata */
+.dashboard p {
+    margin: 10px 0;
+    font-size: 15px;
+    color: #444;
+}
+
+/* Label biodata */
+.dashboard p span {
+    font-weight: 600;
+    color: #222;
+}
+
+/* Tombol logout */
+.dashboard button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #ff4d4d;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.dashboard button:hover {
+    background: #e60000;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .dashboard {
+        margin: 15px;
+        padding: 20px;
+    }
+}

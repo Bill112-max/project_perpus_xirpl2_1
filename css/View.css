@@ -1,0 +1,99 @@
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background-color: #f4f6f9;
+  color: #333;
+  margin: 40px;
+  padding: 0;
+  text-align: center; /* Tambahan: Agar teks umum di body jadi tengah */
+}
+
+/* ==== Judul ==== */
+h2 {
+  color: #1e4e78;
+  text-align: center; /* Sudah ada, dibiarkan */
+  margin-bottom: 10px;
+}
+
+h3 {
+  text-align: center; /* Tambahan: Memastikan tombol di dalam h3 rata tengah */
+}
+
+h3 a {
+  text-decoration: none;
+  background-color: #1e88e5;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 6px;
+  transition: background 0.3s;
+  display: inline-block; /* Tambahan: Agar padding tombol terlihat rapi saat dicenter */
+}
+
+h3 a:hover {
+  background-color: #1565c0;
+}
+
+/* ==== Tabel ==== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0 auto; /* Tambahan: Jika lebar tabel < 100%, ini akan menengahkan tabel */
+}
+
+/* Header tabel */
+th {
+  background-color: #007acc;
+  color: white;
+  padding: 12px 10px;
+  text-align: center; /* UBAH DARI LEFT KE CENTER */
+}
+
+/* Isi tabel */
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: center; /* TAMBAHAN: Agar isi tabel rata tengah */
+  vertical-align: middle; /* TAMBAHAN: Agar teks ada di tengah secara vertikal */
+}
+
+/* Warna baris selang-seling */
+tr:nth-child(even) {
+  background-color: #f2f8fc;
+}
+
+/* Efek hover */
+tr:hover {
+  background-color: #e3f2fd;
+  transition: 0.2s;
+}
+
+/* ==== Teks Aksi (Edit, Hapus) ==== */
+td a {
+  text-decoration: none;
+  color: #007acc;
+  font-weight: 600;
+  transition: 0.2s;
+  display: inline-block; /* Membantu alignment */
+}
+
+td a:hover {
+  color: #d32f2f;
+}
+
+/* ==== Responsif ==== */
+@media (max-width: 768px) {
+  table {
+    font-size: 14px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 a {
+    padding: 6px 10px;
+  }
+}

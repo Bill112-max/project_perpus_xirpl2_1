@@ -1,0 +1,174 @@
+
+
+* { box-sizing: border-box; }
+
+:root{
+  --bg: #dfdfdf;
+  --muted: #6f7280;
+  --primary: #4672ff;
+  --primary-dark: #2646ad;
+  --card-shadow: 0 12px 60px rgba(70,114,255,0.08);
+}
+
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  color:#232323;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+.main{
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+}
+
+
+.card{
+  width: 960px;
+  max-width: 95vw;
+  display:grid;
+  grid-template-columns: 160px 1fr 420px;
+  gap: 0;
+  background:#fff;
+  border-radius:14px;
+  box-shadow: var(--card-shadow);
+  overflow:hidden;
+  align-items: stretch;
+  min-height: 320px;
+}
+
+.card-nav{
+  background: #fafbff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:12px 8px;
+  position: relative;
+}
+.card-nav ul{ list-style:none; padding:0; margin:0; width:100%; }
+.card-nav li{ width:100%; }
+.card-nav button{
+  width:100%;
+  height:88px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:13px;
+  cursor:pointer;
+}
+.card-nav button.active{ color:var(--primary-dark); font-weight:600; }
+.active-bar{
+  position:absolute;
+  left:0;
+  top:0;
+  width:6px;
+  height:88px;
+  background:var(--primary);
+  border-radius:0 6px 6px 0;
+  transition: top .35s ease, height .2s ease;
+}
+
+
+.card-hero{
+  background: linear-gradient(180deg,var(--primary) 0%, var(--primary-dark) 100%);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  padding:28px 24px;
+  position:relative;
+  overflow:hidden;
+}
+.card-hero .card-hero-inner{ width:100%; display:flex; flex-direction:column; height:200%; transition: transform .45s ease-in-out; transform: translateY(0); }
+.card-hero .card-hero-inner.shift-up{ transform: translateY(-50%); }
+.card-hero h2{ margin:0; font-size:28px; font-weight:600; margin-top: 100px; }
+.card-hero h3{ margin:6px 0 0 0; font-size:14px; opacity:0.9; font-weight:400; }
+.card-hero .card-hero-content{ height:50%; display:flex; flex-direction:column; justify-content:center; }
+
+
+.card-form{
+  padding:28px 30px;
+  background:linear-gradient(180deg,#ffffff00,#ffffff00);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-form .forms{
+  width:100%;
+}
+.card-form form{ display:flex; flex-direction:column; gap:12px; }
+.card-form form{ display:none; }
+.card-form form.active{ display:flex; }
+.card-form p{ margin:0; font-size:13px; color:var(--muted); }
+.card-form p a{ color:var(--primary); text-decoration:none; }
+
+.control{ position:relative; }
+.control input{
+  width:100%;
+  height:44px;
+  padding:10px 40px 10px 12px;
+  border-radius:8px;
+  border:1px solid #e7e7ef;
+  background:#fff;
+  font-size:14px;
+  color:#222;
+}
+.control input::placeholder{ color:#bdbdd4; }
+.control i{
+  position:absolute; right:12px; top:50%; transform:translateY(-50%);
+  color:var(--muted); font-size:16px;
+}
+.control input:focus{ outline:none; box-shadow:0 0 0 3px rgba(70,114,255,0.08); border-color:var(--primary); }
+
+.card-form button{
+  height:44px;
+  border-radius:8px;
+  border:0;
+  background:var(--primary);
+  color:#fff;
+  font-weight:600;
+  letter-spacing:0.6px;
+}
+.footer {
+  background-color: #000000;
+  color: #ffffff;
+  text-align: center;
+  padding: 14px 20px;
+  width:100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h2.small{ font-size:18px; margin:0 0 6px; }
+
+@media (max-width:900px){
+  .card{ grid-template-columns: 72px 1fr; grid-template-rows: auto 1fr; width:92vw; }
+  .card-hero{ display:none; }
+  .card-form{ padding:20px; }
+  .card-nav button{ height:72px; }
+}
+
+@media (max-width:480px){
+  .card{ grid-template-columns: 1fr; grid-template-rows: auto auto; }
+  .card-nav{ flex-direction:row; padding:8px; }
+  .card-nav button{ width:50%; height:64px; }
+  .active-bar{ display:none; }
+}
+
+
+.card-nav button:focus, .card-form button:focus, .control input:focus{ outline: none; }
+
+
