@@ -119,7 +119,7 @@ table .btn-primary {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tampilan data Peminjam</title>
-    <!-- <link rel="stylesheet" href="../css/view.css"> -->
+    
 </head>
 
 <body>
@@ -127,7 +127,7 @@ table .btn-primary {
     <?php
 
     if ($tampil['akses'] == 'anggota') {
-        echo '<a href="?page=tambah_buku" class="btn btn-primary mb-3">
+        echo '<a href="?page=tambah_peminjam" class="btn btn-primary mb-3">
             <i class="bi bi-plus-circle"></i> Tambah Buku
           </a>';
     }
