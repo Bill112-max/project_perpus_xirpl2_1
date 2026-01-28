@@ -82,7 +82,6 @@ if ($tampil['akses'] != 'anggota' && $tampil['akses'] != 'admin') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Input Form</title>
-    <link rel="stylesheet" href="../css/tambah.css">
 </head>
 
 <body>
@@ -99,28 +98,14 @@ if ($tampil['akses'] != 'anggota' && $tampil['akses'] != 'admin') {
                 }
                 ?>
             </select>
-            <label>Sinopsis:</label><br>
-            <textarea name="sinopsis"></textarea><br><br>
-            <label>Jumlah halaman:</label><br>
-            <input type="text" name="jumlah_halaman"><br><br>
-            <label>Jumlah buku:</label><br>
-            <input type="text" name="jumlah_buku"><br><br>
-            <label>kategori(id):</label><br>
-            
-            </select><br><br>
-            <label>penerbit(id):</label><br>
-            <select name="id_penerbit" required>
-                <option value="">-- Pilih penerbit --</option>
-                <?php
-                $penerbit = mysqli_query($koneksi, "SELECT * FROM tbl_penerbit ORDER BY nama_penerbit ASC");
-                while ($row = mysqli_fetch_assoc($penerbit)) {
-                    echo "<option value='{$row['id_penerbit']}'>{$row['id_penerbit']} - {$row['nama_penerbit']}</option>";
-                }
-                ?>
-            </select><br><br>
-            <label>Tahun terbit:</label><br>
-            <input type="text" name="tahun_terbit" required><br><br>
+            <label>Jumlah Pinjam:</label><br>
+<input type="text" name="jumlah_pinjam"><br><br>
 
+<label>Tanggal Peminjaman:</label><br>
+<input type="date" name="tanggal_pinjam"><br><br>
+
+<label>Tanggal Pengembalian:</label><br>
+<input type="date" name="tanggal_kembali"><br><br>
             <button type="submit">Simpan</button>
         </form>
     </div>

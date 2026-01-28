@@ -135,6 +135,7 @@ table .btn-primary {
     <table border="1" cellpadding="5">
         <tr>
             <th>ID peminjam</th>
+            <th>id anggota</th>  
             <th>id buku</th>
             <th>judul_buku</th>
             <th>Jumlah pinjam</th>
@@ -146,6 +147,7 @@ table .btn-primary {
         <?php while ($row = mysqli_fetch_array($data)) { ?>
             <tr>
                 <td><?= $row['id_peminjaman']; ?></td>
+                <td><?= $row['id']; ?></td>
                 <td><?= $row['id_buku']; ?></td>
                 <td><?= $row['judul_buku']; ?></td>
                 <td><?= $row['jumlah_pinjam']; ?></td>
@@ -155,7 +157,7 @@ table .btn-primary {
 
               <td>
     <?php if ($tampil['akses'] === 'admin') { ?>
-        <a href="?page=setujui&id_peminjaman=<?= $row['id_peminjaman']; ?>" 
+        <a href="?page=setujui_peminjam&id_peminjaman=<?= $row['id_peminjaman']; ?>" 
            class="btn btn-success mb-3"
            onclick="return confirm('Yakin ingin menyetujui data ini?')">SETUJUI</a>
         <a href="?page=tolak_peminjam&id_peminjaman=<?= $row['id_peminjaman']; ?>" 

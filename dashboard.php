@@ -71,6 +71,11 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'awal';
                             <i class="bi bi-people"></i> Data Peminjam
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="?page=history" class="nav-link text-white <?php if ($page == 'history') echo 'active bg-primary'; ?>">
+                            <i class="bi bi-file-earmark-text card-icon"></i> History
+                        </a>
+                    </li>
                     <li class="nav-item mt-4">
                         <a href="logout.php" class="nav-link text-danger">
                             <i class="bi bi-box-arrow-right"></i> Logout
@@ -95,17 +100,18 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'awal';
                     include "buku/edit_buku.php";
                 } elseif ($page == "hapus_buku") {
                     include "buku/hapus_buku.php";
-                    
                 } elseif ($page == "peminjam") {
                     include "peminjam/view_peminjam.php";
                 } elseif ($page == "tambah_peminjam") {
                     include "peminjam/tambah_peminjam.php";
                 } elseif ($page == "simpan_peminjam") {
                     include "peminjam/simpan_peminjam.php";
-                } elseif ($page == "edit_peminjam") {
-                    include "peminjam/edit_peminjam.php";
+                } elseif ($page == "setujui_peminjam") {
+                    include "peminjam/setujui_peminjaman.php";
                 } elseif ($page == "tolak_peminjam") {
                     include "peminjam/tolak_peminjaman.php";
+                } elseif ($page == "history") {
+                    include "history/view_history.php";
                 } else {
                     include "404.php";
                 }

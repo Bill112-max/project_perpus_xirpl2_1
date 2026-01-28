@@ -1,32 +1,35 @@
 <?php
 include 'inc/conect.php';
-session_start();
-if (isset($_SESSION['username'])) {
-    header("Location: dashboard.php");
-    exit();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
+
 if (isset($_POST['Login'])) {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $query = "SELECT * FROM tbl_users WHERE username = '$username' AND password = '$password'";
-$hasil = mysqli_query($koneksi, $query);
-$cek = mysqli_num_rows($hasil);
-$tampil = mysqli_fetch_array($hasil);
-        if ($cek > 0) {
+    $username = mysqli_real_escape_string($koneksi, $_POST['username']);
+    $password = mysqli_real_escape_string($koneksi, $_POST['password']);
 
+    // Ambil data user dari database
+    $query = "SELECT * FROM tbl_users WHERE username = '$username' AND password = '$password'";
+    $hasil = mysqli_query($koneksi, $query);
 
-            $_SESSION['username'] = $username;
-            header("Location: dashboard.php");
-            exit();
-        } else {
-            echo "Invalid username or password.";
-        }
+    if ($hasil && mysqli_num_rows($hasil) > 0) {
+        $data = mysqli_fetch_assoc($hasil);
+
+        // Simpan semua info penting ke session
+        $_SESSION['id']       = $data['id'];
+        $_SESSION['username'] = $data['username'];
+        $_SESSION['akses']    = $data['akses']; // <-- tambahan penting
+
+        // Redirect ke dashboard
+        header("Location: dashboard.php");
+        exit();
+    } else {
+        $error = "Invalid username or password.";
     }
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,17 +39,14 @@ $tampil = mysqli_fetch_array($hasil);
     <script src="https://unpkg.com/akar-icons-fonts"></script>
     <script src="js/login.js" defer></script>
 </head>
+<body>
   <main class="main">
     <div class="card">
       <div class="card-nav">
         <span class="active-bar"></span>
         <ul>
           <li>
-            <button
-              type="button"
-              class="signin active"
-              onclick="selectView('signin')"
-            >
+            <button type="button" class="signin active" onclick="selectView('signin')">
               <i class="ai-person-check"></i>
               <span>Sign In</span>
             </button>
@@ -72,46 +72,46 @@ $tampil = mysqli_fetch_array($hasil);
         </div>
       </div>
 
-<div class="card-form">
-                <div class="forms">
-                    <form method="post" id="signin" class="active">
-                        <p>Don't have an account? <a href="#" onclick="selectView('signup'); return false;">Sign Up</a>.</p>
-                        <label> Username </label>
-                        <div class="control">
-                            <input type="text" id="username" name="username" required><br><br>
-                            <i class="ai-envelope"></i>
-                        </div>
-                        <label> Password </label>
-                        <div class="control">
-                            <input type="password" id="password" name="password" required><br><br>
-                            <i class="ai-lock-on"></i>
-                        </div>
-                        <button type="submit" name="Login">SIGN IN</button>
-
-
-                    </form>
-                    <form id="signup">
-                        <p>Already have an account? <a href="#" onclick="selectView('signin'); return false;">Sign In</a>.</p>
-                        <label> Username </label>
-                        <div class="control">
-                            <input type="text" placeholder="NOAW" />
-                            <i class="ai-person"></i>
-                        </div>
-                        <label> Email </label>
-                        <div class="control">
-                            <input type="email" placeholder="NOAW@gmail.com" />
-                            <i class="ai-envelope"></i>
-                        </div>
-                        <label> Password </label>
-                        <div class="control">
-                            <input type="password" placeholder="●●●●●●●●●●●●●" />
-                            <i class="ai-lock-on"></i>
-                        </div>
-                        <button>SIGN UP</button>
-                    </form>
-                </div>
+      <div class="card-form">
+        <div class="forms">
+          <form method="post" id="signin" class="active">
+            <p>Don't have an account? <a href="#" onclick="selectView('signup'); return false;">Sign Up</a>.</p>
+            <?php if (!empty($error)) { echo "<p style='color:red;'>$error</p>"; } ?>
+            <label> Username </label>
+            <div class="control">
+              <input type="text" id="username" name="username" required><br><br>
+              <i class="ai-envelope"></i>
             </div>
+            <label> Password </label>
+            <div class="control">
+              <input type="password" id="password" name="password" required><br><br>
+              <i class="ai-lock-on"></i>
+            </div>
+            <button type="submit" name="Login">SIGN IN</button>
+          </form>
+
+          <form id="signup">
+            <p>Already have an account? <a href="#" onclick="selectView('signin'); return false;">Sign In</a>.</p>
+            <label> Username </label>
+            <div class="control">
+              <input type="text" placeholder="NOAW" />
+              <i class="ai-person"></i>
+            </div>
+            <label> Email </label>
+            <div class="control">
+              <input type="email" placeholder="NOAW@gmail.com" />
+              <i class="ai-envelope"></i>
+            </div>
+            <label> Password </label>
+            <div class="control">
+              <input type="password" placeholder="●●●●●●●●●●●●●" />
+              <i class="ai-lock-on"></i>
+            </div>
+            <button>SIGN UP</button>
+          </form>
         </div>
-    </main>
+      </div>
+    </div>
+  </main>
 </body>
 </html>
