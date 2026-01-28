@@ -11,7 +11,6 @@ $id_login    = $_SESSION['id'];
 $akses_login = $_SESSION['akses'];
 
 $data = null;
-
 if ($akses_login === 'anggota') {
     $data = mysqli_query($koneksi, "
         SELECT p.*, b.judul_buku, u.nama
@@ -21,7 +20,6 @@ if ($akses_login === 'anggota') {
         WHERE p.id = '$id_login'
     ");
 }
-
 if ($akses_login === 'admin') {
     if (isset($_GET['id_user']) && trim($_GET['id_user']) !== '') {
         $id_user = mysqli_real_escape_string($koneksi, trim($_GET['id_user']));
@@ -57,22 +55,14 @@ if ($akses_login === 'admin') {
 </head>
 <body>
     <h2>History</h2>
-
-    <?php if ($akses_login === 'admin') {
-    if (isset($_GET['id_user']) && trim($_GET['id_user']) !== '') {
-        $id_user = mysqli_real_escape_string($koneksi, trim($_GET['id_user']));
-    } else {
-        $data = false; 
-    }
-} ?>
+    <?php if ($akses_login === 'admin') { ?>
         <form method="get" action="dashboard.php">
-    <input type="hidden" name="page" value="history">
-    <label>Cari history berdasarkan ID User:</label>
-    <input type="text" name="id_user" placeholder="Masukkan ID User">
-    <button type="submit">Cari</button>
-</form>
-
-    <!-- Tabel hasil history -->
+            <input type="hidden" name="page" value="history">
+            <label>Cari history berdasarkan ID User:</label>
+            <input type="text" name="id_user" placeholder="Masukkan ID User">
+            <button type="submit">Cari</button>
+        </form>
+    <?php } ?>
     <?php if ($data && mysqli_num_rows($data) > 0) { ?>
         <table>
             <tr>
