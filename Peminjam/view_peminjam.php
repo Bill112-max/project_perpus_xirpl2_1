@@ -163,8 +163,10 @@ table .btn-primary {
         <a href="?page=tolak_peminjam&id_peminjaman=<?= $row['id_peminjaman']; ?>" 
            class="btn btn-danger mb-3"
            onclick="return confirm('Yakin ingin menolak data ini?')">TOLAK</a>
-    <?php } else { ?>
-        Tidak ada aksi
+    <?php } if ($tampil['akses'] === 'anggota') { ?>
+        <a href="?page=pengembalian&id_peminjaman=<?= $row['id_peminjaman']; ?>" 
+           class="btn btn-danger mb-3"
+           onclick="return confirm('Yakin ingin menolak data ini?')">kembalikan</a>
     <?php } ?>
 </td>
         <?php } ?>
