@@ -1,26 +1,47 @@
-
 <?php
 include "inc/conect.php";
-//memulai session
 
-//cek login
+// cek login
 if (!isset($_SESSION['username'])) {
     header("location:../login.php");
     exit;
 }
 ?>
 
-<!-- CONTENT -->
-<div class="content">
-    <h2>Profile</h2>
-    <div class="card-container">
-        <div class="card-2">
-            <h3>NAMA: <?= $tampil['nama'] ?></h3>
-            <h3>EMAIL: <?= $tampil['email'] ?></h3>
-            <h3>NO TLP: <?= $tampil['no_tlp'] ?></h3>   
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <i class="bi bi-person-circle fs-2"></i>
+                    <h5 class="mt-2 mb-0">Profil Pengguna</h5>
+                </div>
+
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="fw-semibold">Nama</span>
+                            <span><?= $tampil['nama'] ?></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="fw-semibold">Email</span>
+                            <span><?= $tampil['email'] ?></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="fw-semibold">No. Telepon</span>
+                            <span><?= $tampil['no_tlp'] ?></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-footer text-center bg-light">
+                    <span class="text-muted small">
+                        <i class="bi bi-shield-lock"></i> Data akun tersimpan aman
+                    </span>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
-
-</body>
-</html>

@@ -61,11 +61,14 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'awal';
                             <i class="bi bi-person"></i> Profil Saya
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="?page=buku" class="nav-link text-white <?php if ($page == 'buku') echo 'active bg-primary'; ?>">
-                            <i class="bi bi-book"></i> Data buku
-                        </a>
-                    </li>
+                    <?php if ($tampil['akses'] === 'admin') { ?>
+                        <li class="nav-item">
+                            <a href="?page=buku" class="nav-link text-white <?php if ($page == 'buku') echo 'active bg-primary'; ?>">
+                                <i class="bi bi-book"></i> Data buku
+                            </a>
+                        </li>
+                    <?php } ?>
+
                     <li class="nav-item">
                         <a href="?page=peminjam" class="nav-link text-white <?php if ($page == 'peminjam') echo 'active bg-primary'; ?>">
                             <i class="bi bi-people"></i> Data Peminjam
