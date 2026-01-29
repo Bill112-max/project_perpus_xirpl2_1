@@ -8,69 +8,63 @@ if ($tampil['akses'] != 'anggota' && $tampil['akses'] != 'admin') {
 <!DOCTYPE html>
 <html lang="en">
 <style>
-    body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f6f9;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
     margin: 0;
     padding: 0;
 }
 
 .wrapper {
-    max-width: 700px;
+    max-width: 600px;
     margin: 40px auto;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
 }
+
 .wrapper h1 {
     text-align: center;
-    font-size: 1.8rem;
-    margin-bottom: 30px;
-    color: #0d6efd;
-}
-.wrapper label {
-    font-weight: 600;
-    margin-bottom: 6px;
-    display: block;
+    font-size: 1.6rem;
+    margin-bottom: 25px;
     color: #333;
 }
 
-.wrapper input[type="text"],
-.wrapper textarea,
-.wrapper select {
-    width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+.wrapper label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #444;
 }
 
-.wrapper input:focus,
-.wrapper textarea:focus,
-.wrapper select:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
-    outline: none;
+.wrapper input[type="text"],
+.wrapper input[type="date"],
+.wrapper select,
+.wrapper textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
 }
 
 .wrapper button {
     width: 100%;
     padding: 12px;
-    background-color: #0d6efd;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
+    background-color: #007bff;
+    color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
+    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
+
 .wrapper button:hover {
-    background-color: #0b5ed7;
+    background-color: #0056b3;
 }
+
 @media (max-width: 768px) {
     .wrapper {
         margin: 20px;
@@ -112,3 +106,4 @@ if ($tampil['akses'] != 'anggota' && $tampil['akses'] != 'admin') {
 </body>
 
 </html>
+        

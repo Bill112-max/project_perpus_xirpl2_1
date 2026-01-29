@@ -39,76 +39,97 @@ if (isset($_POST['update'])) {
 <!DOCTYPE html>
 <html lang="id">
 <style>
-
-.wrapper {
-    max-width: 600px;
-    margin: 40px auto;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.wrapper h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #0d6efd; 
-}
-
-.wrapper label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 500;
-    color: #333;
-}
-
-.wrapper input[type="text"],
-.wrapper textarea {
-    width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 18px;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.wrapper input[type="text"]:focus,
-.wrapper textarea:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
-    outline: none;
-}
-
-
-.wrapper button {
-    width: 100%;
-    padding: 12px;
-    background: #0d6efd;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-
-.wrapper button:hover {
-    background: #0b5ed7;
-}
-
-
-@media (max-width: 768px) {
-    .wrapper {
-        margin: 20px;
-        padding: 20px;
+    /* Reset dasar */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Arial, sans-serif;
     }
-}
+
+    /* Wrapper utama */
+    .wrapper {
+        max-width: 700px;
+        margin: 50px auto;
+        background: #fdfdfd;
+        padding: 40px;
+        border-radius: 14px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Judul */
+    .wrapper h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #0d6efd;
+        letter-spacing: 0.5px;
+    }
+
+    /* Label */
+    .wrapper label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #444;
+    }
+
+    /* Input & Textarea */
+    .wrapper input[type="text"],
+    .wrapper textarea,
+    .wrapper select {
+        width: 100%;
+        padding: 12px 14px;
+        margin-bottom: 20px;
+        border: 1px solid #d0d0d0;
+        border-radius: 10px;
+        font-size: 1rem;
+        background: #fff;
+        transition: all 0.3s ease;
+    }
+
+    .wrapper input[type="text"]:focus,
+    .wrapper textarea:focus,
+    .wrapper select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 8px rgba(13, 110, 253, 0.25);
+        outline: none;
+    }
+
+    /* Tombol */
+    .wrapper button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+        color: #fff;
+        font-size: 1.05rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .wrapper button:hover {
+        background: linear-gradient(135deg, #0b5ed7, #094db5);
+        transform: translateY(-2px);
+    }
+
+    /* Responsif */
+    @media (max-width: 768px) {
+        .wrapper {
+            margin: 20px;
+            padding: 25px;
+        }
+
+        .wrapper h2 {
+            font-size: 1.5rem;
+        }
+    }
 </style>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -131,25 +152,32 @@ if (isset($_POST['update'])) {
             <input type="text" name="jumlah_halaman" value="<?php echo $buku['jumlah_halaman']; ?>" required>
             <label>jumlah buku</label>
             <input type="text" name="jumlah_buku" value="<?php echo $buku['jumlah_buku']; ?>" required>
-              <label>kategori(id):</label><br>
+            <label>kategori(id):</label><br>
+            <label>Kategori (id):</label><br>
             <select name="id_kategori" required>
                 <option value="">-- Pilih Kategori --</option>
                 <?php
                 $kategori = mysqli_query($koneksi, "SELECT * FROM tbl_kategori ORDER BY kategori ASC");
                 while ($row = mysqli_fetch_assoc($kategori)) {
-                    echo "<option value='{$row['id_kategori']}'>{$row['id_kategori']} - {$row['kategori']}</option>";
+                    // cek apakah id_kategori dari buku sama dengan id_kategori dari tabel kategori
+                    $selected = ($row['id_kategori'] == $buku['id_kategori']) ? "selected" : "";
+                    echo "<option value='{$row['id_kategori']}' $selected>{$row['id_kategori']} - {$row['kategori']}</option>";
                 }
                 ?>
             </select><br><br>
-            <label>penerbit(id):</label><br>
+
+            <label>Penerbit (id):</label><br>
             <select name="id_penerbit" required>
-                <option value="">-- Pilih penerbit --</option>
+                <option value="">-- Pilih Penerbit --</option>
                 <?php
                 $penerbit = mysqli_query($koneksi, "SELECT * FROM tbl_penerbit ORDER BY nama_penerbit ASC");
                 while ($row = mysqli_fetch_assoc($penerbit)) {
-                    echo "<option value='{$row['id_penerbit']}'>{$row['id_penerbit']} - {$row['nama_penerbit']}</option>";
+                    $selected = ($row['id_penerbit'] == $buku['id_penerbit']) ? "selected" : "";
+                    echo "<option value='{$row['id_penerbit']}' $selected>{$row['id_penerbit']} - {$row['nama_penerbit']}</option>";
                 }
                 ?>
+            </select><br><br>
+
             <label>tahun terbit</label>
             <input type="text" name="tahun_terbit" value="<?php echo $buku['tahun_terbit']; ?>" readonly>
             <button type="submit" name="update">Simpan Perubahan</button>
