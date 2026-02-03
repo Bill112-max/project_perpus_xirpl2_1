@@ -32,6 +32,10 @@ if (!isset($_SESSION['username'])) {
                             <span class="fw-semibold">No. Telepon</span>
                             <span><?= $tampil['no_tlp'] ?></span>
                         </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="fw-semibold">role</span>
+                            <span><?= $tampil['akses'] ?></span>
+                        </li>
                     </ul>
                 </div>
 

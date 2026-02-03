@@ -2,9 +2,9 @@
 include "inc/conect.php";
 session_start();
 
-if (!isset($_SESSION['username'])) {
-    header("location:login.php");
-    exit;
+if (empty($_SESSION['id']) || empty($_SESSION['akses'])) {
+    header("Location: login.php");
+    exit();
 }
 
 $user = $_SESSION['username'];
@@ -115,6 +115,10 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'awal';
                     include "peminjam/tolak_peminjaman.php";
                 } elseif ($page == "history") {
                     include "history/view_history.php";
+                } elseif ($page == "pengembalian") {
+                    include "pengembalian/proses_pengembalian.php";
+                } elseif ($page == "setujui_pengembalian") {
+                    include "pengembalian/setujui_pengembalian.php";
                 } else {
                     include "404.php";
                 }

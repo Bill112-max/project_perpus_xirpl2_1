@@ -1,176 +1,105 @@
 <?php
 include __DIR__ . '/../inc/conect.php';
-
-$data = mysqli_query($koneksi, "SELECT 
-    tbl_peminjaman.*, 
-    tbl_buku.judul_buku,
-    tbl_users.nama
-    FROM tbl_peminjaman
-JOIN
-    tbl_users ON tbl_peminjaman.id = tbl_users.id
-JOIN
-    tbl_buku ON tbl_peminjaman.id_buku = tbl_buku.id_buku
-");
+if ($_SESSION['akses'] === 'anggota') {
+    $id_user = $_SESSION['id'];
+    $data = mysqli_query($koneksi, "
+        SELECT p.*, b.judul_buku, u.nama
+        FROM tbl_peminjaman p
+        JOIN tbl_users u ON p.id = u.id
+        JOIN tbl_buku b ON p.id_buku = b.id_buku
+        WHERE p.id = '$id_user'
+    ");
+} else {
+    // Jika admin → tampilkan semua data yang butuh persetujuan
+    $data = mysqli_query($koneksi, "
+        SELECT p.*, b.judul_buku, u.nama
+        FROM tbl_peminjaman p
+        JOIN tbl_users u ON p.id = u.id
+        JOIN tbl_buku b ON p.id_buku = b.id_buku
+        WHERE p.status IN ('pending','menunggu pengembalian')
+    ");
+}
 ?>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
-    <style>
-        body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f6f9;
-    margin: 0;
-    padding: 0;
-}
-
-/* Judul halaman */
-h2 {
-    text-align: center;
-    margin: 30px 0;
-    font-size: 1.8rem;
-    color: #0d6efd;
-}
-
-/* Tombol tambah buku */
-.btn {
-    display: inline-block;
-    margin-bottom: 20px;
-    padding: 10px 16px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-radius: 6px;
-    text-decoration: none;
-}
-
-/* Tabel styling */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fdfdfd; /* 1% lebih gelap dari putih */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    margin-bottom: 40px;
-}
-
-/* Header tabel */
-table th {
-    background-color: #e9ecef;
-    color: #333;
-    font-weight: 600;
-    padding: 12px;
-    text-align: left;
-    border-bottom: 2px solid #dee2e6;
-}
-
-/* Baris tabel */
-table td {
-    padding: 10px 12px;
-    border-bottom: 1px solid #dee2e6;
-    vertical-align: top;
-    color: #444;
-}
-
-/* Hover baris */
-table tr:hover {
-    background-color: #f1f3f5;
-}
-
-/* Tombol aksi */
-table .btn-primary {
-    padding: 6px 12px;
-    font-size: 0.85rem;
-    margin-right: 6px;
-    border-radius: 4px;
-}
-
-/* Responsif */
-@media (max-width: 768px) {
-    table, thead, tbody, th, td, tr {
-        display: block;
-    }
-
-    table thead {
-        display: none;
-    }
-
-    table tr {
-        margin-bottom: 15px;
-        border: 1px solid #dee2e6;
-        border-radius: 6px;
-        padding: 10px;
-        background-color: #fff;
-    }
-
-    table td {
-        padding: 8px;
-        text-align: left;
-        position: relative;
-    }
-
-    table td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        display: block;
-        margin-bottom: 4px;
-        color: #0d6efd;
-    }
-}
-    </style>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tampilan data Peminjam</title>
-    
+    <title>Daftar Data Peminjam</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; margin: 0; padding: 0; }
+        h2 { text-align: center; margin: 30px 0; font-size: 1.8rem; color: #0d6efd; }
+        table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 40px; }
+        th, td { padding: 12px; border-bottom: 1px solid #dee2e6; text-align: left; }
+        th { background: #e9ecef; font-weight: 600; }
+        tr:hover { background: #f1f3f5; }
+        .btn { padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 0.85rem; margin-right: 6px; }
+        .btn-success { background: #198754; color: #fff; }
+        .btn-danger { background: #dc3545; color: #fff; }
+        .btn-warning { background: #ffc107; color: #000; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; }
+        .bg-info { background: #0dcaf0; color: #000; }
+        .bg-success { background: #198754; color: #fff; }
+    </style>
 </head>
-
 <body>
     <h2>Daftar Data Peminjam</h2>
-    <?php
-
-    if ($tampil['akses'] == 'anggota') {
-        echo '<a href="?page=tambah_peminjam" class="btn btn-primary mb-3">
+    <?php if ($_SESSION['akses'] === 'anggota') { ?>
+        <a href="?page=tambah_peminjam" class="btn btn-primary mb-3">
             <i class="bi bi-plus-circle"></i> Tambah Buku
-          </a>';
-    }
-    ?>
-    <table border="1" cellpadding="5">
+        </a>
+    <?php } ?>
+    <table>
         <tr>
-            <th>ID peminjam</th>
-            <th>id anggota</th>  
-            <th>id buku</th>
-            <th>judul_buku</th>
-            <th>Jumlah pinjam</th>
-            <th>tanggal Pinjam</th>
+            <th>ID Peminjaman</th>
+            <th>ID Anggota</th>
+            <th>Nama</th>
+            <th>ID Buku</th>
+            <th>Judul Buku</th>
+            <th>Jumlah Pinjam</th>
+            <th>Tanggal Pinjam</th>
             <th>Tanggal Kembali</th>
-            <th>status</th>
-            <th>AKSI</th>
+            <th>Status</th>
+            <th>Aksi</th>
         </tr>
         <?php while ($row = mysqli_fetch_array($data)) { ?>
             <tr>
                 <td><?= $row['id_peminjaman']; ?></td>
                 <td><?= $row['id']; ?></td>
+                <td><?= $row['nama']; ?></td>
                 <td><?= $row['id_buku']; ?></td>
                 <td><?= $row['judul_buku']; ?></td>
                 <td><?= $row['jumlah_pinjam']; ?></td>
                 <td><?= $row['tanggal_pinjam']; ?></td>
                 <td><?= $row['tanggal_kembali']; ?></td>
                 <td><?= $row['status']; ?></td>
-
-              <td>
-    <?php if ($tampil['akses'] === 'admin') { ?>
-        <a href="?page=setujui_peminjam&id_peminjaman=<?= $row['id_peminjaman']; ?>" 
-           class="btn btn-success mb-3"
-           onclick="return confirm('Yakin ingin menyetujui data ini?')">SETUJUI</a>
-        <a href="?page=tolak_peminjam&id_peminjaman=<?= $row['id_peminjaman']; ?>" 
-           class="btn btn-danger mb-3"
-           onclick="return confirm('Yakin ingin menolak data ini?')">TOLAK</a>
-    <?php } if ($tampil['akses'] === 'anggota') { ?>
-        <a href="?page=pengembalian&id_peminjaman=<?= $row['id_peminjaman']; ?>" 
-           class="btn btn-danger mb-3"
-           onclick="return confirm('Yakin ingin menolak data ini?')">kembalikan</a>
-    <?php } ?>
-</td>
+                <td>
+                    <?php if ($_SESSION['akses'] === 'admin') { ?>
+                        <?php if ($row['status'] === 'pending') { ?>
+                            <a href="?page=setujui_peminjam&id_peminjaman=<?= $row['id_peminjaman']; ?>" 
+                               class="btn btn-success"
+                               onclick="return confirm('Yakin ingin menyetujui data ini?')">SETUJUI</a>
+                            <a href="?page=tolak_peminjam&id_peminjaman=<?= $row['id_peminjaman']; ?>" 
+                               class="btn btn-danger"
+                               onclick="return confirm('Yakin ingin menolak data ini?')">TOLAK</a>
+                        <?php } elseif ($row['status'] === 'menunggu pengembalian') { ?>
+                            <a href="?page=setujui_pengembalian&id_peminjaman=<?= $row['id_peminjaman']; ?>" 
+                               class="btn btn-success"
+                               onclick="return confirm('Yakin ingin menyetujui pengembalian ini?')">SETUJUI PENGEMBALIAN</a>
+                        <?php } ?>
+                    <?php } elseif ($_SESSION['akses'] === 'anggota') { ?>
+                        <?php if ($row['status'] === 'disetujui') { ?>
+                            <a href="?page=pengembalian&id_peminjaman=<?= $row['id_peminjaman']; ?>" 
+                               class="btn btn-warning"
+                               onclick="return confirm('Yakin ingin mengembalikan buku ini?')">KEMBALIKAN</a>
+                        <?php } elseif ($row['status'] === 'menunggu pengembalian') { ?>
+                            <span class="badge bg-info">Menunggu persetujuan admin</span>
+                        <?php } elseif ($row['status'] === 'dikembalikan') { ?>
+                            <span class="badge bg-success">Selesai</span>
+                        <?php } ?>
+                    <?php } ?>
+                </td>
+            </tr>
         <?php } ?>
     </table>
 </body>
-
 </html>

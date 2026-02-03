@@ -8,10 +8,15 @@ $peminjaman = mysqli_query($koneksi, "SELECT * FROM tbl_peminjaman WHERE id_pemi
 $data = mysqli_fetch_assoc($peminjaman);
 
 if ($data) {
-    // Update status di tbl_peminjaman (biar user masih lihat datanya)
+    // Update status jadi dikembalikan
     mysqli_query($koneksi, "UPDATE tbl_peminjaman 
-        SET status='disetujui' 
+        SET status='dikembalikan', tanggal_kembali=NOW() 
         WHERE id_peminjaman='$id_peminjaman'");
+
+    // Tambah stok buku kembali
+    mysqli_query($koneksi, "UPDATE tbl_buku 
+        SET jumlah_buku = jumlah_buku + {$data['jumlah_pinjam']} 
+        WHERE id_buku='{$data['id_buku']}'");
 
     // Catat ke history
     mysqli_query($koneksi, "INSERT INTO tbl_history 
@@ -21,18 +26,13 @@ if ($data) {
             '{$data['id']}',
             '{$data['id_buku']}',
             '{$data['jumlah_pinjam']}',
-            'disetujui',
+            'dikembalikan',
             '{$_SESSION['username']}',
             NOW()
         )");
 
-    // Kurangi stok buku
-    mysqli_query($koneksi, "UPDATE tbl_buku 
-        SET jumlah_buku = jumlah_buku - {$data['jumlah_pinjam']} 
-        WHERE id_buku='{$data['id_buku']}'");
-
     echo "<script>
-        alert('Pengajuan berhasil disetujui, stok berkurang, data tetap ada untuk pengembalian');
+        alert('Pengembalian disetujui, stok bertambah, status jadi dikembalikan');
         window.location='?page=peminjam';
     </script>";
 } else {

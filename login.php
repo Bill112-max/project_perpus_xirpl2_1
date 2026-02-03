@@ -4,29 +4,34 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+if (!empty($_SESSION['id']) && !empty($_SESSION['akses'])) {
+    header("Location: dashboard.php");
+    exit();
+}
+
+$error = '';
 if (isset($_POST['Login'])) {
     $username = mysqli_real_escape_string($koneksi, $_POST['username']);
     $password = mysqli_real_escape_string($koneksi, $_POST['password']);
 
-    // Ambil data user dari database
-    $query = "SELECT * FROM tbl_users WHERE username = '$username' AND password = '$password'";
+
+    $query = "SELECT * FROM tbl_users WHERE username='$username' AND password='$password'";
     $hasil = mysqli_query($koneksi, $query);
 
     if ($hasil && mysqli_num_rows($hasil) > 0) {
         $data = mysqli_fetch_assoc($hasil);
 
-        // Simpan semua info penting ke session
         $_SESSION['id']       = $data['id'];
         $_SESSION['username'] = $data['username'];
-        $_SESSION['akses']    = $data['akses']; // <-- tambahan penting
+        $_SESSION['akses']    = $data['akses']; 
 
-        // Redirect ke dashboard
         header("Location: dashboard.php");
         exit();
     } else {
-        $error = "Invalid username or password.";
+        $error = "Username atau password salah.";
     }
 }
+?>
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,12 +56,6 @@ if (isset($_POST['Login'])) {
               <span>Sign In</span>
             </button>
           </li>
-          <li>
-            <button type="button" class="signup" onclick="selectView('signup')">
-              <i class="ai-person-add"></i>
-              <span>Sign Up</span>
-            </button>
-          </li>
         </ul>
       </div>
       <div class="card-hero">
@@ -64,10 +63,6 @@ if (isset($_POST['Login'])) {
           <div class="card-hero-content signin">
             <h2>Welcome Back.</h2>
             <h3>Please enter your credentials.</h3>
-          </div>
-          <div class="card-hero-content signup">
-            <h2>Sign Up Now.</h2>
-            <h3>Join the crowd and get started.</h3>
           </div>
         </div>
       </div>
@@ -90,28 +85,4 @@ if (isset($_POST['Login'])) {
             <button type="submit" name="Login">SIGN IN</button>
           </form>
 
-          <form id="signup">
-            <p>Already have an account? <a href="#" onclick="selectView('signin'); return false;">Sign In</a>.</p>
-            <label> Username </label>
-            <div class="control">
-              <input type="text" placeholder="NOAW" />
-              <i class="ai-person"></i>
-            </div>
-            <label> Email </label>
-            <div class="control">
-              <input type="email" placeholder="NOAW@gmail.com" />
-              <i class="ai-envelope"></i>
-            </div>
-            <label> Password </label>
-            <div class="control">
-              <input type="password" placeholder="●●●●●●●●●●●●●" />
-              <i class="ai-lock-on"></i>
-            </div>
-            <button>SIGN UP</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </main>
-</body>
-</html>
+         

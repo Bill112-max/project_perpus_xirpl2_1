@@ -11,27 +11,37 @@ $id_login    = $_SESSION['id'];
 $akses_login = $_SESSION['akses'];
 
 $data = null;
+
+// USER: hanya lihat history miliknya
 if ($akses_login === 'anggota') {
     $data = mysqli_query($koneksi, "
-        SELECT p.*, b.judul_buku, u.nama
-        FROM tbl_peminjaman p
-        JOIN tbl_users u ON p.id = u.id
-        JOIN tbl_buku b ON p.id_buku = b.id_buku
-        WHERE p.id = '$id_login'
+        SELECT h.*, b.judul_buku, u.nama
+        FROM tbl_history h
+        JOIN tbl_users u ON h.id = u.id
+        JOIN tbl_buku b ON h.id_buku = b.id_buku
+        WHERE h.id = '$id_login'
+        AND h.waktu = (
+            SELECT MAX(waktu) FROM tbl_history h2 WHERE h2.id_peminjaman = h.id_peminjaman
+        )
+        ORDER BY h.waktu DESC
     ");
 }
+
+// ADMIN: hanya tampilkan hasil pencarian jika ada
 if ($akses_login === 'admin') {
     if (isset($_GET['id_user']) && trim($_GET['id_user']) !== '') {
         $id_user = mysqli_real_escape_string($koneksi, trim($_GET['id_user']));
         $data = mysqli_query($koneksi, "
-            SELECT p.*, b.judul_buku, u.nama
-            FROM tbl_peminjaman p
-            JOIN tbl_users u ON p.id = u.id
-            JOIN tbl_buku b ON p.id_buku = b.id_buku
-            WHERE p.id = '$id_user'
+            SELECT h.*, b.judul_buku, u.nama
+            FROM tbl_history h
+            JOIN tbl_users u ON h.id = u.id
+            JOIN tbl_buku b ON h.id_buku = b.id_buku
+            WHERE h.id = '$id_user'
+            AND h.waktu = (
+                SELECT MAX(waktu) FROM tbl_history h2 WHERE h2.id_peminjaman = h.id_peminjaman
+            )
+            ORDER BY h.waktu DESC
         ");
-    } else {
-        $data = false; 
     }
 }
 ?>
@@ -54,7 +64,8 @@ if ($akses_login === 'admin') {
     </style>
 </head>
 <body>
-    <h2>History</h2>
+    <h2>History Peminjaman</h2>
+
     <?php if ($akses_login === 'admin') { ?>
         <form method="get" action="dashboard.php">
             <input type="hidden" name="page" value="history">
@@ -63,6 +74,7 @@ if ($akses_login === 'admin') {
             <button type="submit">Cari</button>
         </form>
     <?php } ?>
+
     <?php if ($data && mysqli_num_rows($data) > 0) { ?>
         <table>
             <tr>
@@ -72,9 +84,9 @@ if ($akses_login === 'admin') {
                 <th>ID Buku</th>
                 <th>Judul Buku</th>
                 <th>Jumlah Pinjam</th>
-                <th>Tanggal Pinjam</th>
-                <th>Tanggal Kembali</th>
                 <th>Status</th>
+                <th>Admin</th>
+                <th>Waktu</th>
             </tr>
             <?php while ($row = mysqli_fetch_assoc($data)) { ?>
                 <tr>
@@ -84,9 +96,9 @@ if ($akses_login === 'admin') {
                     <td><?= $row['id_buku']; ?></td>
                     <td><?= $row['judul_buku']; ?></td>
                     <td><?= $row['jumlah_pinjam']; ?></td>
-                    <td><?= $row['tanggal_pinjam']; ?></td>
-                    <td><?= $row['tanggal_kembali']; ?></td>
                     <td><?= $row['status']; ?></td>
+                    <td><?= $row['admin']; ?></td>
+                    <td><?= $row['waktu']; ?></td>
                 </tr>
             <?php } ?>
         </table>
