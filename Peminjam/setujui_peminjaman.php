@@ -1,20 +1,28 @@
 <?php
-include __DIR__ . '/../inc/conect.php';
-session_start();
 
-$id_peminjaman = $_GET['id_peminjaman'];
+include __DIR__ . '/../inc/conect.php';
+
+if (!isset($_GET['id_peminjaman']) || !is_numeric($_GET['id_peminjaman'])) {
+    echo "<script>
+        alert('ID peminjaman tidak valid');
+        window.location='?page=peminjam';
+    </script>";
+    exit;
+}
+
+$id_peminjaman = (int) $_GET['id_peminjaman'];
 
 $peminjaman = mysqli_query($koneksi, "SELECT * FROM tbl_peminjaman WHERE id_peminjaman='$id_peminjaman'");
 $data = mysqli_fetch_assoc($peminjaman);
 
 if ($data) {
-    // Update status di tbl_peminjaman (biar user masih lihat datanya)
-    mysqli_query($koneksi, "UPDATE tbl_peminjaman 
+  
+    $update = mysqli_query($koneksi, "UPDATE tbl_peminjaman 
         SET status='disetujui' 
         WHERE id_peminjaman='$id_peminjaman'");
 
-    // Catat ke history
-    mysqli_query($koneksi, "INSERT INTO tbl_history 
+    $admin = isset($_SESSION['username']) ? $_SESSION['username'] : 'system';
+    $insert = mysqli_query($koneksi, "INSERT INTO tbl_history 
         (id_peminjaman, id, id_buku, jumlah_pinjam, status, admin, waktu) 
         VALUES (
             '{$data['id_peminjaman']}',
@@ -22,19 +30,26 @@ if ($data) {
             '{$data['id_buku']}',
             '{$data['jumlah_pinjam']}',
             'disetujui',
-            '{$_SESSION['username']}',
+            '$admin',
             NOW()
         )");
 
-    // Kurangi stok buku
-    mysqli_query($koneksi, "UPDATE tbl_buku 
-        SET jumlah_buku = jumlah_buku - {$data['jumlah_pinjam']} 
+    $jumlah_pinjam = (int) $data['jumlah_pinjam'];
+    $update_buku = mysqli_query($koneksi, "UPDATE tbl_buku 
+        SET jumlah_buku = jumlah_buku - $jumlah_pinjam 
         WHERE id_buku='{$data['id_buku']}'");
 
-    echo "<script>
-        alert('Pengajuan berhasil disetujui, stok berkurang, data tetap ada untuk pengembalian');
-        window.location='?page=peminjam';
-    </script>";
+    if ($update && $insert && $update_buku) {
+        echo "<script>
+            alert('Pengajuan berhasil disetujui, stok berkurang, data tetap ada untuk pengembalian');
+            window.location='?page=peminjam';
+        </script>";
+    } else {
+        echo "<script>
+            alert('Terjadi kesalahan saat menyimpan data: " . mysqli_error($koneksi) . "');
+            window.location='?page=peminjam';
+        </script>";
+    }
 } else {
     echo "<script>
         alert('Data peminjaman tidak ditemukan');

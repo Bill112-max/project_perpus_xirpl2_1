@@ -1,109 +1,144 @@
 <?php
-include __DIR__ . '/../inc/conect.php';
-if ($tampil['akses'] != 'anggota' && $tampil['akses'] != 'admin') {
-    echo "<div class='alert alert-danger'>Anda tidak memiliki akses!</div>";
-    exit;
-}
+include "inc/conect.php";
+
+$buku = mysqli_query($koneksi,"
+    SELECT 
+        b.id_buku,
+        b.judul_buku,
+        k.kategori,
+        p.nama_penerbit
+    FROM tbl_buku b
+    LEFT JOIN tbl_kategori k ON b.id_kategori = k.id_kategori
+    LEFT JOIN tbl_penerbit p ON b.id_penerbit = p.id_penerbit
+");
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
-}
-
-.wrapper {
-    max-width: 600px;
-    margin: 40px auto;
-    background-color: #ffffff;
-    padding: 25px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-}
-
-.wrapper h1 {
-    text-align: center;
-    font-size: 1.6rem;
-    margin-bottom: 25px;
-    color: #333;
-}
-
-.wrapper label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
-    color: #444;
-}
-
-.wrapper input[type="text"],
-.wrapper input[type="date"],
-.wrapper select,
-.wrapper textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 18px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-}
-
-.wrapper button {
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.wrapper button:hover {
-    background-color: #0056b3;
-}
-
-@media (max-width: 768px) {
-    .wrapper {
-        margin: 20px;
-        padding: 20px;
-    }
-}
-</style>
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Form</title>
+<meta charset="UTF-8">
+<title>Form Pengajuan Peminjaman</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f2f2f2;
+}
+.box{
+    width:600px;
+    margin:40px auto;
+    background:#fff;
+    padding:25px;
+    border-radius:10px;
+}
+label{font-weight:bold}
+input,select,button{
+    width:100%;
+    padding:8px;
+    margin:8px 0;
+}
+button{
+    background:#0d6efd;
+    color:#fff;
+    border:none;
+    cursor:pointer;
+}
+button:hover{background:#0b5ed7}
+
+.list{
+    border:1px solid #ddd;
+    max-height:200px;
+    overflow:auto;
+}
+.item{
+    padding:8px;
+    cursor:pointer;
+    border-bottom:1px solid #eee;
+}
+.item:hover{
+    background:#f1f1f1;
+}
+.small{font-size:12px;color:#555}
+</style>
 </head>
 
 <body>
-    <div class="wrapper">
-        <h1> Form Pengajuan Pinjamanan </h1>
-        <form action="dashboard.php?page=simpan_peminjam" method="post">
-            <label>Judul Buku:</label><br>
-            <select name="id_buku" required>
-                <option value="">-- Pilih Buku --</option>
-                <?php
-                $buku = mysqli_query($koneksi, "SELECT * FROM tbl_buku ORDER BY id_buku ASC");
-                while ($row = mysqli_fetch_assoc($buku)) {
-                    echo "<option value='{$row['id_buku']}'>{$row['judul_buku']}</option>";
-                }
-                ?>
-            </select>
-            <label>Jumlah Pinjam:</label><br>
-<input type="text" name="jumlah_pinjam"><br><br>
 
-<label>Tanggal Peminjaman:</label><br>
-<input type="date" name="tanggal_pinjam"><br><br>
+<div class="box">
+<h2>Form Pengajuan Peminjaman</h2>
 
-<label>Tanggal Pengembalian:</label><br>
-<input type="date" name="tanggal_kembali"><br><br>
-            <button type="submit">Simpan</button>
-        </form>
+<!-- MODE SEARCH -->
+<label>Cari Berdasarkan</label>
+<select id="mode">
+    <option value="judul">Judul</option>
+    <option value="kategori">Kategori</option>
+    <option value="penerbit">Penerbit</option>
+</select>
+
+<input type="text" id="keyword" placeholder="Ketik pencarian...">
+
+<div class="list" id="listBuku">
+<?php while($b=mysqli_fetch_assoc($buku)){ ?>
+    <div class="item"
+        data-id="<?= $b['id_buku'] ?>"
+        data-judul="<?= strtolower($b['judul_buku']) ?>"
+        data-kategori="<?= strtolower($b['kategori']) ?>"
+        data-penerbit="<?= strtolower($b['nama_penerbit']) ?>"
+        onclick="pilihBuku(this)">
+        <b><?= $b['judul_buku'] ?></b><br>
+        <span class="small">
+            <?= $b['kategori'] ?> | <?= $b['nama_penerbit'] ?>
+        </span>
     </div>
-</body>
+<?php } ?>
+</div>
 
+<hr>
+
+<form method="post" action="dashboard.php?page=simpan_peminjam">
+<input type="hidden" name="id_buku" id="id_buku">
+
+<label>Buku Terpilih</label>
+<input type="text" id="judul_buku" readonly required>
+
+<label>Jumlah Pinjam</label>
+<input type="number" name="jumlah" required>
+
+<label>Tanggal Pinjam</label>
+<input type="date" name="tgl_pinjam" required>
+
+<label>Tanggal Kembali</label>
+<input type="date" name="tgl_kembali" required>
+
+<button>Simpan</button>
+</form>
+
+</div>
+
+<script>
+const keyword = document.getElementById("keyword");
+const mode = document.getElementById("mode");
+const items = document.querySelectorAll(".item");
+
+keyword.addEventListener("keyup", filter);
+mode.addEventListener("change", filter);
+
+function filter(){
+    let key = keyword.value.toLowerCase();
+    let by = mode.value;
+
+    items.forEach(i=>{
+        let val = i.dataset[by];
+        i.style.display = val.includes(key) ? "block" : "none";
+    });
+}
+
+function pilihBuku(el){
+    document.getElementById("id_buku").value = el.dataset.id;
+    document.getElementById("judul_buku").value =
+        el.querySelector("b").innerText;
+}
+</script>
+
+</body>
 </html>
-        

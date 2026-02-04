@@ -1,16 +1,22 @@
 <?php
 include __DIR__ . '/../inc/conect.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if ($_SESSION['akses'] === 'anggota') {
     $id_user = $_SESSION['id'];
+    // Ambil hanya data yang belum selesai (tidak dikembalikan)
     $data = mysqli_query($koneksi, "
         SELECT p.*, b.judul_buku, u.nama
         FROM tbl_peminjaman p
         JOIN tbl_users u ON p.id = u.id
         JOIN tbl_buku b ON p.id_buku = b.id_buku
-        WHERE p.id = '$id_user'
+        WHERE p.id = '$id_user' 
+          AND p.status IN ('pending','disetujui','menunggu pengembalian')
     ");
 } else {
-    // Jika admin → tampilkan semua data yang butuh persetujuan
+    // Admin hanya lihat data yang butuh persetujuan
     $data = mysqli_query($koneksi, "
         SELECT p.*, b.judul_buku, u.nama
         FROM tbl_peminjaman p
@@ -93,8 +99,6 @@ if ($_SESSION['akses'] === 'anggota') {
                                onclick="return confirm('Yakin ingin mengembalikan buku ini?')">KEMBALIKAN</a>
                         <?php } elseif ($row['status'] === 'menunggu pengembalian') { ?>
                             <span class="badge bg-info">Menunggu persetujuan admin</span>
-                        <?php } elseif ($row['status'] === 'dikembalikan') { ?>
-                            <span class="badge bg-success">Selesai</span>
                         <?php } ?>
                     <?php } ?>
                 </td>
