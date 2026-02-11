@@ -1,5 +1,5 @@
 <?php
-include '../inc/conect.php';
+include __DIR__ . '/../inc/conect.php';
 $id_kategori = $_GET['id_kategori'];
 $sql = "DELETE FROM tbl_kategori WHERE id_kategori='$id_kategori'";
 if (mysqli_query($koneksi, $sql)) {

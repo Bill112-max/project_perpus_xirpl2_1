@@ -11,6 +11,7 @@ if (!$buku) {
 if (isset($_POST['update'])) {
     $id_buku    = $_POST['id_buku'];
     $judul_buku  = $_POST['judul_buku'];
+    $gambar_buku  = $_POST['gambar_buku'];
     $sinopsis    = $_POST['sinopsis'];
     $jumlah_halaman = $_POST['jumlah_halaman'];
     $jumlah_buku  = $_POST['jumlah_buku'];
@@ -20,6 +21,7 @@ if (isset($_POST['update'])) {
 
     $sql = "UPDATE tbl_buku 
             SET judul_buku='$judul_buku',
+                gambar_buku='$gambar_buku',
                 sinopsis='$sinopsis',
                 jumlah_halaman='$jumlah_halaman',
                 jumlah_buku='$jumlah_buku'
@@ -152,7 +154,8 @@ if (isset($_POST['update'])) {
             <input type="text" name="jumlah_halaman" value="<?php echo $buku['jumlah_halaman']; ?>" required>
             <label>jumlah buku</label>
             <input type="text" name="jumlah_buku" value="<?php echo $buku['jumlah_buku']; ?>" required>
-            <label>kategori(id):</label><br>
+            <label>Gambar cover buku</label><br>
+            <input type="file" name="gambar_buku" accept=".jpg,.jpeg,.png "value="<?php echo $buku['gambar_buku']; ?>" required><br><br>
             <label>Kategori (id):</label><br>
             <select name="id_kategori" required>
                 <option value="">-- Pilih Kategori --</option>

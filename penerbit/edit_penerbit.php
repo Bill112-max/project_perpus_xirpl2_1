@@ -1,5 +1,5 @@
 <?php
-include '../inc/conect.php';
+include __DIR__ . '/../inc/conect.php';
 $id_penerbit = $_GET['id_penerbit']; 
 $result = mysqli_query($koneksi, "SELECT * FROM tbl_penerbit WHERE id_penerbit='$id_penerbit'"); 
 $penerbit= mysqli_fetch_array($result);   

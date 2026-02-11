@@ -1,5 +1,5 @@
 <?php
-include '../inc/conect.php';
+include __DIR__ . '/../inc/conect.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

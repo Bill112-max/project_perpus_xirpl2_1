@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include '../inc/conect.php';
+include __DIR__ . '/../inc/conect.php';
 
 $id_penerbit        = $_POST['id_penerbit'];
 $nama_penerbit      = $_POST['nama_penerbit'];

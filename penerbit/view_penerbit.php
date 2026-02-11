@@ -1,5 +1,5 @@
 <?php 
-include '../inc/conect.php';
+include __DIR__ . '/../inc/conect.php';
 $data = mysqli_query($koneksi, "SELECT * FROM tbl_penerbit"); 
 ?> 
 

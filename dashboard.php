@@ -103,36 +103,25 @@ if ($tableBuku) {
             width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.06); color:#fff; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:1.05rem;
             box-shadow:0 2px 6px rgba(0,0,0,0.18); border:2px solid rgba(255,255,255,0.9); transition: all .15s ease;
         }
-
-        /* hover effect */
         .sidebar .avatar:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
-
-        /* active (clicked) */
         .sidebar .avatar.avatar-active { background: #0d6efd; border-color: #0d6efd; color: #fff; box-shadow: 0 8px 26px rgba(13,110,253,0.28); }
-
         .sidebar .role { color: rgba(255,255,255,0.78); font-size:0.82rem; }
-
         .sidebar .nav-link {
             color: rgba(255,255,255,0.92); border-radius:6px; padding: .5rem .75rem; display:flex; align-items:center; gap:.6rem;
         }
-
         .sidebar .nav-link i { width:22px; text-align:center; }
-
         .sidebar .nav-link:hover,
         .sidebar .nav-link.active {
             background: rgba(255,255,255,0.08); color: #fff;
             text-decoration: none;
         }
-
         .sidebar .badge {
             background: rgba(255,255,255,0.12); color:#fff; font-weight:600; font-size:0.8rem;
         }
-
-        /* Buku card & cover */
         .book-card .card { border-radius: 8px; overflow: hidden; }
         .book-cover {
             width: 100%;
-            height: 180px; /* 20% lebih besar daripada tinggi default ~150px */
+            height: 180px;
             object-fit: cover;
             display: block;
             background-color: #f1f3f5;
@@ -141,13 +130,11 @@ if ($tableBuku) {
         .book-card .card-title { font-size: 0.98rem; height: 48px; overflow: hidden; }
         @media (max-width: 576px) {
             .book-cover {
-                height: 140px; /* kecilkan di tampilan mobile */
+                height: 140px; 
             }
             .sidebar { padding: .6rem; }
             .sidebar .profile { padding: .4rem; }
         }
-
-        /* Offcanvas & responsive tweaks */
         .offcanvas-body .nav { padding-left:0; padding-right:0; }
         .offcanvas .nav-link { color:#fff; }
         .offcanvas .nav-link.active { background-color: rgba(255,255,255,0.08); color:#fff; }
@@ -194,8 +181,6 @@ if ($tableBuku) {
             </div>
         </div>
     </nav>
-
-    <!-- Offcanvas sidebar for small devices -->
     <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">PerpusKu</h5>
@@ -217,10 +202,18 @@ if ($tableBuku) {
                     <a class="nav-link <?php if ($page == 'profile') echo 'active'; ?>" href="?page=profile"><i class="bi bi-person me-2"></i> Profil Saya</a>
 
                     <?php if ($tampil['akses'] === 'admin') { ?>
-                        <a class="nav-link <?php if ($page == 'buku') echo 'active'; ?>" href="?page=buku"><i class="bi bi-book me-2"></i> Data Buku</a>
-                        <a class="nav-link <?php if ($page == 'kategori') echo 'active'; ?>" href="?page=kategori"><i class="bi bi-tags me-2"></i> Kategori</a>
-                        <a class="nav-link <?php if ($page == 'penerbit') echo 'active'; ?>" href="?page=penerbit"><i class="bi bi-building me-2"></i> Penerbit</a>
-                    <?php } ?>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle <?php if (in_array($page, ['buku','kategori','penerbit'])) echo 'active'; ?>" 
+           href="#" id="masterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-gear me-2"></i> Master Data
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="masterDropdown">
+            <li><a class="dropdown-item <?php if ($page == 'buku') echo 'active'; ?>" href="?page=buku"><i class="bi bi-book me-2"></i> Data Buku</a></li>
+            <li><a class="dropdown-item <?php if ($page == 'kategori') echo 'active'; ?>" href="?page=kategori"><i class="bi bi-tags me-2"></i> Kategori</a></li>
+            <li><a class="dropdown-item <?php if ($page == 'penerbit') echo 'active'; ?>" href="?page=penerbit"><i class="bi bi-building me-2"></i> Penerbit</a></li>
+        </ul>
+    </li>
+<?php } ?>
 
                     <a class="nav-link d-flex align-items-center <?php if ($page == 'peminjam') echo 'active'; ?>" href="?page=peminjam"><i class="bi bi-people me-2"></i> Data Peminjam <?php if (!empty($countPending)) { echo '<span class="badge ms-auto">'.intval($countPending).'</span>'; } ?></a>
                     <a class="nav-link <?php if ($page == 'history') echo 'active'; ?>" href="?page=history"><i class="bi bi-clock-history me-2"></i> History</a>
@@ -231,7 +224,6 @@ if ($tableBuku) {
                 </nav>
                 <hr class="border-secondary">
                 <div class="d-grid gap-2">
-                    <!-- Desktop / Main tab: full buttons (ensure always visible on md+ via sidebar/main content) -->
                     <a href="?page=tambah_buku" class="btn btn-sm btn-primary d-none d-md-inline"> <i class="bi bi-plus-circle me-1"></i> Tambah Buku</a>
                     <a href="?page=tambah_peminjam" class="btn btn-sm btn-outline-primary d-none d-md-inline"> <i class="bi bi-person-plus me-1"></i> Tambah Peminjam</a>
 
@@ -259,11 +251,40 @@ if ($tableBuku) {
                         <a class="nav-link <?php if ($page == 'awal') echo 'active'; ?>" href="?page=awal"><i class="bi bi-speedometer2"></i> Dashboard</a>
                         <a class="nav-link <?php if ($page == 'profile') echo 'active'; ?>" href="?page=profile"><i class="bi bi-person"></i> Profil Saya</a>
 
-                        <?php if ($tampil['akses'] === 'admin') { ?>
-                            <a class="nav-link <?php if ($page == 'buku') echo 'active'; ?>" href="?page=buku"><i class="bi bi-book"></i> Data Buku</a>
-                            <a class="nav-link <?php if ($page == 'kategori') echo 'active'; ?>" href="?page=kategori"><i class="bi bi-tags"></i> Kategori</a>
-                            <a class="nav-link <?php if ($page == 'penerbit') echo 'active'; ?>" href="?page=penerbit"><i class="bi bi-building"></i> Penerbit</a>
-                        <?php } ?>
+                         <li class="nav-item">
+                    <a class="nav-link <?php if ($page == 'view_tampil_buku') echo 'active'; ?>" href="?page=view_tampil_buku">
+                        <i class="bi bi-book"></i> Buku
+                    </a>
+                </li>
+        <?php if ($tampil['akses'] === 'admin') { ?>
+    <li class="nav-item">
+        <a class="nav-link d-flex justify-content-between align-items-center" 
+           data-bs-toggle="collapse" href="#masterDataMenu" role="button" aria-expanded="false" aria-controls="masterDataMenu">
+            <span><i class="bi bi-gear"></i> Data Buku</span>
+            <i class="bi bi-chevron-down"></i>
+        </a>
+        
+        <div class="collapse" id="masterDataMenu">
+            <ul class="nav flex-column ms-3">
+                <li class="nav-item">
+                    <a class="nav-link <?php if ($page == 'buku') echo 'active'; ?>" href="?page=buku">
+                        <i class="bi bi-book"></i> Buku
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php if ($page == 'kategori') echo 'active'; ?>" href="?page=kategori">
+                        <i class="bi bi-tags"></i> Kategori
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php if ($page == 'penerbit') echo 'active'; ?>" href="?page=penerbit">
+                        <i class="bi bi-building"></i> Penerbit
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+<?php } ?>
 
                         <a class="nav-link d-flex align-items-center <?php if ($page == 'peminjam') echo 'active'; ?>" href="?page=peminjam"><i class="bi bi-people"></i> Data Peminjam <?php if (!empty($countPending)) { echo '<span class="badge ms-auto">'.intval($countPending).'</span>'; } ?></a>
                         <a class="nav-link <?php if ($page == 'history') echo 'active'; ?>" href="?page=history"><i class="bi bi-clock-history"></i> History</a>
@@ -275,7 +296,6 @@ if ($tableBuku) {
             <main class="col-md-10 p-4">
                 <?php
                 if ($page == "awal") {
-                    // Dashboard utama — tampilkan kartu statistik, chart, dan tabel
                     ?>
                     <div class="container-fluid">
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -362,12 +382,12 @@ if ($tableBuku) {
                         <!-- Buku kami -->
                         <div class="row mt-4">
                             <div class="col-12">
-                                <h6 class="mb-3">Buku Kami</h6>
+                                <h3 class="mb-3">Buku Kami</h3>
                                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
                                     <?php if (!empty($booksList)) { foreach ($booksList as $b) { ?>
                                         <div class="col book-card">
                                             <div class="card h-100 shadow-sm">
-                                                <?php $cover = !empty($b['cover']) ? htmlspecialchars($b['cover']) : 'https://via.placeholder.com/300x180?text=No+Cover'; ?>
+                                                <?php $cover = (isset($b['gambar_buku']) && !empty($b['gambar_buku'])) ? htmlspecialchars($b['gambar_buku']) : 'https://via.placeholder.com/300x180?text=No+Cover'; ?>
                                                 <img src="<?= $cover ?>" alt="cover" class="book-cover">
                                                 <div class="card-body">
                                                     <h6 class="card-title mb-1"><?= htmlspecialchars($b['judul_buku']) ?></h6>
@@ -396,6 +416,31 @@ if ($tableBuku) {
                     include "buku/edit_buku.php";
                 } elseif ($page == "hapus_buku") {
                     include "buku/hapus_buku.php";
+                } elseif ($page == "view_tampil_buku") {
+                    include "buku/view_Tampil_buku.php";
+
+                 } elseif ($page == "kategori") {
+                    include "kategori/view_kategori.php";
+                } elseif ($page == "tambah_kategori") {
+                    include "kategori/tambah_kategori.php";
+                } elseif ($page == "simpan_kategori") {
+                    include "kategori/simpan_kategori.php";
+                } elseif ($page == "edit_kategori") {
+                    include "kategori/edit_kategori.php";
+                } elseif ($page == "hapus_kategori") {
+                    include "kategori/hapus_kategori.php";
+
+                } elseif ($page == "penerbit") {
+                    include "penerbit/view_penerbit.php";
+                } elseif ($page == "tambah_penerbit") {
+                    include "penerbit/tambah_penerbit.php";
+                } elseif ($page == "simpan_penerbit") {
+                    include "penerbit/simpan_penerbit.php";
+                } elseif ($page == "edit_penerbit") {
+                    include "penerbit/edit_penerbit.php";
+                } elseif ($page == "hapus_penerbit") {
+                    include "penerbit/hapus_penerbit.php";
+
                 } elseif ($page == "peminjam") {
                     include "peminjam/view_peminjam.php";
                 } elseif ($page == "tambah_peminjam") {
@@ -442,7 +487,6 @@ if ($tableBuku) {
         }
     </script>
     <script>
-        // Toggle avatar active state (click / keyboard)
         document.querySelectorAll('.avatar').forEach(function(el){
             el.addEventListener('click', function(){
                 this.classList.toggle('avatar-active');
