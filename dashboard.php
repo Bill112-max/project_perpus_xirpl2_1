@@ -144,154 +144,138 @@ if ($tableBuku) {
 
 <body>
 
-    <nav class="navbar navbar-dark bg-primary navbar-expand-lg">
-        <div class="container-fluid">
-            <button class="btn btn-primary d-md-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
-                <i class="bi bi-list"></i>
-            </button>
+   <?php $initial = !empty($tampil['nama']) ? strtoupper(mb_substr($tampil['nama'],0,1)) : 'U'; ?>
 
-            <a class="navbar-brand fw-bold d-flex align-items-center" href="dashboard.php">
-                <i class="bi bi-book-half me-2"></i> <span>PerpusKu</span>
-            </a>
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+    <div class="container-fluid">
+        <button class="btn btn-primary d-md-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+            <i class="bi bi-list"></i>
+        </button>
 
-            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#topbar" aria-controls="topbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="dashboard.php?page=awal">
+            <i class="bi bi-book-half me-2"></i> PerpusKu
+        </a>
 
-                <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
-                    <li class="nav-item me-3 d-none d-lg-block">
-                        <a class="nav-link text-white" href="#" title="Notifikasi"><i class="bi bi-bell"></i></a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-circle fs-4 me-2"></i>
-                            <div class="d-none d-lg-block text-start">
-                                <div style="line-height:1; font-size:0.95rem;">Hai, <strong><?= htmlspecialchars($tampil['nama']) ?></strong></div>
-                                <small class="text-white-50" style="font-size:0.75rem;"> <?= htmlspecialchars($tampil['akses']) ?></small>
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="?page=profile"><i class="bi bi-person me-2"></i> Profil</a></li>
-                            <li><a class="dropdown-item" href="?page=profile&edit=1"><i class="bi bi-gear me-2"></i> Pengaturan</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="logout.php"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
-                        </ul>
-                    </li>
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#topbar" aria-controls="topbar" aria-expanded="false">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
+            <li class="nav-item me-3 d-none d-lg-block">
+                <a class="nav-link text-white" href="#" title="Notifikasi"><i class="bi bi-bell"></i></a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle fs-4 me-2"></i>
+                    <div class="d-none d-lg-block text-start">
+                        <div style="line-height:1;font-size:.95rem;">Hai, <strong><?= htmlspecialchars($tampil['nama']) ?></strong></div>
+                        <small class="text-white-50" style="font-size:.75rem;"><?= htmlspecialchars($tampil['akses']) ?></small>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="?page=profile"><i class="bi bi-person me-2"></i> Profil</a></li>
+                    <li><a class="dropdown-item" href="?page=profile&edit=1"><i class="bi bi-gear me-2"></i> Pengaturan</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="logout.php"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
                 </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- OFFCANVAS SIDEBAR (mobile) -->
+<div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">PerpusKu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <div class="p-3">
+            <div class="profile mb-3">
+                <div class="avatar"><?= $initial ?></div>
+                <div>
+                    <div style="font-weight:700;color:#fff;"><?= htmlspecialchars($tampil['nama']) ?></div>
+                    <small class="role"><?= htmlspecialchars($tampil['akses']) ?></small>
+                </div>
+            </div>
+            <nav class="nav flex-column">
+                <a class="nav-link <?= $page=='awal'?'active':'' ?>" href="?page=awal"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+                <a class="nav-link <?= $page=='profile'?'active':'' ?>" href="?page=profile"><i class="bi bi-person me-2"></i> Profil Saya</a>
+                <?php if ($tampil['akses'] === 'admin'): ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle <?= in_array($page,['buku','kategori','penerbit'])?'active':'' ?>" href="#" id="masterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-gear me-2"></i> Master Data
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="masterDropdown">
+                        <li><a class="dropdown-item <?= $page=='buku'?'active':'' ?>" href="?page=buku"><i class="bi bi-book me-2"></i> Data Buku</a></li>
+                        <li><a class="dropdown-item <?= $page=='kategori'?'active':'' ?>" href="?page=kategori"><i class="bi bi-tags me-2"></i> Kategori</a></li>
+                        <li><a class="dropdown-item <?= $page=='penerbit'?'active':'' ?>" href="?page=penerbit"><i class="bi bi-building me-2"></i> Penerbit</a></li>
+                    </ul>
+                </li>
+                <?php endif; ?>
+                <a class="nav-link d-flex align-items-center <?= $page=='peminjam'?'active':'' ?>" href="?page=peminjam">
+                    <i class="bi bi-people me-2"></i> Data Peminjam
+                    <?php if (!empty($countPending)) echo '<span class="badge ms-auto">'.intval($countPending).'</span>'; ?>
+                </a>
+                <a class="nav-link <?= $page=='history'?'active':'' ?>" href="?page=history"><i class="bi bi-clock-history me-2"></i> History</a>
+                <div class="mt-3">
+                    <a href="logout.php" class="nav-link text-danger"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
+                </div>
+            </nav>
+            <hr class="border-secondary">
+            <div class="d-grid gap-2">
+                <a href="?page=tambah_buku" class="btn btn-sm btn-primary d-none d-md-inline"><i class="bi bi-plus-circle me-1"></i> Tambah Buku</a>
+                <a href="?page=tambah_peminjam" class="btn btn-sm btn-outline-primary d-none d-md-inline"><i class="bi bi-person-plus me-1"></i> Tambah Peminjam</a>
             </div>
         </div>
-    </nav>
-    <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">PerpusKu</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body p-0">
+    </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- DESKTOP SIDEBAR -->
+        <aside class="col-md-2 sidebar d-none d-md-block">
             <div class="p-3">
-                <?php $initial = !empty($tampil['nama']) ? strtoupper(mb_substr($tampil['nama'],0,1)) : 'U'; ?>
-                <div class="profile mb-3">
+                <div class="profile">
                     <div class="avatar"><?= $initial ?></div>
                     <div>
                         <div style="font-weight:700;color:#fff;"><?= htmlspecialchars($tampil['nama']) ?></div>
                         <small class="role"><?= htmlspecialchars($tampil['akses']) ?></small>
                     </div>
                 </div>
-
                 <nav class="nav flex-column">
-                    <a class="nav-link <?php if ($page == 'awal') echo 'active'; ?>" href="?page=awal"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
-                    <a class="nav-link <?php if ($page == 'profile') echo 'active'; ?>" href="?page=profile"><i class="bi bi-person me-2"></i> Profil Saya</a>
-
-                    <?php if ($tampil['akses'] === 'admin') { ?>
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle <?php if (in_array($page, ['buku','kategori','penerbit'])) echo 'active'; ?>" 
-           href="#" id="masterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-gear me-2"></i> Master Data
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="masterDropdown">
-            <li><a class="dropdown-item <?php if ($page == 'buku') echo 'active'; ?>" href="?page=buku"><i class="bi bi-book me-2"></i> Data Buku</a></li>
-            <li><a class="dropdown-item <?php if ($page == 'kategori') echo 'active'; ?>" href="?page=kategori"><i class="bi bi-tags me-2"></i> Kategori</a></li>
-            <li><a class="dropdown-item <?php if ($page == 'penerbit') echo 'active'; ?>" href="?page=penerbit"><i class="bi bi-building me-2"></i> Penerbit</a></li>
-        </ul>
-    </li>
-<?php } ?>
-
-                    <a class="nav-link d-flex align-items-center <?php if ($page == 'peminjam') echo 'active'; ?>" href="?page=peminjam"><i class="bi bi-people me-2"></i> Data Peminjam <?php if (!empty($countPending)) { echo '<span class="badge ms-auto">'.intval($countPending).'</span>'; } ?></a>
-                    <a class="nav-link <?php if ($page == 'history') echo 'active'; ?>" href="?page=history"><i class="bi bi-clock-history me-2"></i> History</a>
-
-                    <div class="mt-3">
-                        <a href="logout.php" class="nav-link text-danger"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
-                    </div>
-                </nav>
-                <hr class="border-secondary">
-                <div class="d-grid gap-2">
-                    <a href="?page=tambah_buku" class="btn btn-sm btn-primary d-none d-md-inline"> <i class="bi bi-plus-circle me-1"></i> Tambah Buku</a>
-                    <a href="?page=tambah_peminjam" class="btn btn-sm btn-outline-primary d-none d-md-inline"> <i class="bi bi-person-plus me-1"></i> Tambah Peminjam</a>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid">
-        <div class="row">
-
-            <aside class="col-md-2 sidebar d-none d-md-block">
-                <div class="p-3">
-                    <?php $initial = !empty($tampil['nama']) ? strtoupper(mb_substr($tampil['nama'],0,1)) : 'U'; ?>
-                    <div class="profile">
-                        <div class="avatar"><?= $initial ?></div>
-                        <div>
-                            <div style="font-weight:700;color:#fff;"><?= htmlspecialchars($tampil['nama']) ?></div>
-                            <small class="role"><?= htmlspecialchars($tampil['akses']) ?></small>
+                    <a class="nav-link <?= $page=='awal'?'active':'' ?>" href="?page=awal"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                    <a class="nav-link <?= $page=='profile'?'active':'' ?>" href="?page=profile"><i class="bi bi-person"></i> Profil Saya</a>
+                    <?php if ($tampil['akses'] === 'admin'): ?>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#masterDataMenu" role="button" aria-expanded="false" aria-controls="masterDataMenu">
+                            <span><i class="bi bi-gear"></i> Data Buku</span>
+                            <i class="bi bi-chevron-down"></i>
+                        </a>
+                        <div class="collapse" id="masterDataMenu">
+                            <ul class="nav flex-column ms-3">
+                                <li><a class="nav-link <?= $page=='buku'?'active':'' ?>" href="?page=buku"><i class="bi bi-book"></i> Buku</a></li>
+                                <li><a class="nav-link <?= $page=='kategori'?'active':'' ?>" href="?page=kategori"><i class="bi bi-tags"></i> Kategori</a></li>
+                                <li><a class="nav-link <?= $page=='penerbit'?'active':'' ?>" href="?page=penerbit"><i class="bi bi-building"></i> Penerbit</a></li>
+                            </ul>
                         </div>
-                    </div>
-
-                    <nav class="nav flex-column">
-                        <a class="nav-link <?php if ($page == 'awal') echo 'active'; ?>" href="?page=awal"><i class="bi bi-speedometer2"></i> Dashboard</a>
-                        <a class="nav-link <?php if ($page == 'profile') echo 'active'; ?>" href="?page=profile"><i class="bi bi-person"></i> Profil Saya</a>
-
-                         <li class="nav-item">
-                    <a class="nav-link <?php if ($page == 'view_tampil_buku') echo 'active'; ?>" href="?page=view_tampil_buku">
-                        <i class="bi bi-book"></i> Buku
+                    </li>
+                    <?php elseif ($tampil['akses'] === 'anggota'): ?>
+                   <a class="nav-link <?= $page=='buku'?'active':'' ?>" href="?page=buku"><i class="bi bi-book"></i> Buku</a>
+                    <?php endif; ?>
+                    <a class="nav-link d-flex align-items-center <?= $page=='peminjam'?'active':'' ?>" href="?page=peminjam">
+                        <i class="bi bi-people"></i> Data Peminjam
+                        <?php if (!empty($countPending)) echo '<span class="badge ms-auto">'.intval($countPending).'</span>'; ?>
                     </a>
-                </li>
-        <?php if ($tampil['akses'] === 'admin') { ?>
-    <li class="nav-item">
-        <a class="nav-link d-flex justify-content-between align-items-center" 
-           data-bs-toggle="collapse" href="#masterDataMenu" role="button" aria-expanded="false" aria-controls="masterDataMenu">
-            <span><i class="bi bi-gear"></i> Data Buku</span>
-            <i class="bi bi-chevron-down"></i>
-        </a>
-        
-        <div class="collapse" id="masterDataMenu">
-            <ul class="nav flex-column ms-3">
-                <li class="nav-item">
-                    <a class="nav-link <?php if ($page == 'buku') echo 'active'; ?>" href="?page=buku">
-                        <i class="bi bi-book"></i> Buku
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php if ($page == 'kategori') echo 'active'; ?>" href="?page=kategori">
-                        <i class="bi bi-tags"></i> Kategori
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php if ($page == 'penerbit') echo 'active'; ?>" href="?page=penerbit">
-                        <i class="bi bi-building"></i> Penerbit
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </li>
-<?php } ?>
+                    <a class="nav-link <?= $page=='history'?'active':'' ?>" href="?page=history"><i class="bi bi-clock-history"></i> History</a>
+                </nav>
+            </div>
+        </aside>
 
-                        <a class="nav-link d-flex align-items-center <?php if ($page == 'peminjam') echo 'active'; ?>" href="?page=peminjam"><i class="bi bi-people"></i> Data Peminjam <?php if (!empty($countPending)) { echo '<span class="badge ms-auto">'.intval($countPending).'</span>'; } ?></a>
-                        <a class="nav-link <?php if ($page == 'history') echo 'active'; ?>" href="?page=history"><i class="bi bi-clock-history"></i> History</a>
-
-                    </nav>
-                </div>
-            </aside>
+        <!-- KONTEN HALAMAN -->
 
             <main class="col-md-10 p-4">
                 <?php
@@ -415,9 +399,7 @@ if ($tableBuku) {
                 } elseif ($page == "edit_buku") {
                     include "buku/edit_buku.php";
                 } elseif ($page == "hapus_buku") {
-                    include "buku/hapus_buku.php";
-                } elseif ($page == "view_tampil_buku") {
-                    include "buku/view_Tampil_buku.php";
+                    include "buku/hapus_buku.php";     
 
                  } elseif ($page == "kategori") {
                     include "kategori/view_kategori.php";

@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 $_id = $_SESSION['id'];
 include __DIR__ . '/../inc/conect.php';
 $id_buku    = $_POST['id_buku'];
-$jumlah_pinjam  = $_POST['jumlah'];
+$jumlah_pinjam  = $_POST['jumlah_pinjam'];
 $tanggal_pinjam  = $_POST['tgl_pinjam'];
 $tanggal_kembali  = $_POST['tgl_kembali'];
 

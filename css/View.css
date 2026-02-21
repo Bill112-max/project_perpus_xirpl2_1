@@ -2,20 +2,25 @@ body {
   font-family: "Poppins", Arial, sans-serif;
   background-color: #f4f6f9;
   color: #333;
-  margin: 40px;
+  margin: 0;
   padding: 0;
-  text-align: center; /* Tambahan: Agar teks umum di body jadi tengah */
+  text-align: left;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* ==== Judul ==== */
 h2 {
   color: #1e4e78;
-  text-align: center; /* Sudah ada, dibiarkan */
-  margin-bottom: 10px;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 h3 {
-  text-align: center; /* Tambahan: Memastikan tombol di dalam h3 rata tengah */
+  text-align: center;
+  margin: 0;
 }
 
 h3 a {
@@ -25,7 +30,7 @@ h3 a {
   padding: 8px 15px;
   border-radius: 6px;
   transition: background 0.3s;
-  display: inline-block; /* Tambahan: Agar padding tombol terlihat rapi saat dicenter */
+  display: inline-block;
 }
 
 h3 a:hover {
@@ -34,13 +39,13 @@ h3 a:hover {
 
 /* ==== Tabel ==== */
 table {
-  width: 100%;
+  width: calc(100% - 80px);
   border-collapse: collapse;
   background-color: #fff;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   border-radius: 10px;
   overflow: hidden;
-  margin: 0 auto; /* Tambahan: Jika lebar tabel < 100%, ini akan menengahkan tabel */
+  margin: 20px 40px 40px 40px;
 }
 
 /* Header tabel */
@@ -87,6 +92,8 @@ td a:hover {
 @media (max-width: 768px) {
   table {
     font-size: 14px;
+    width: calc(100% - 40px);
+    margin: 20px 20px 40px 20px;
   }
 
   h2 {
@@ -95,5 +102,16 @@ td a:hover {
 
   h3 a {
     padding: 6px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  table {
+    width: calc(100% - 30px);
+    margin: 20px 15px 40px 15px;
+  }
+
+  h2 {
+    font-size: 18px;
   }
 }

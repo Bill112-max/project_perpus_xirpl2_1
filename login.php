@@ -25,7 +25,7 @@ if (isset($_POST['Login'])) {
         $_SESSION['username'] = $data['username'];
         $_SESSION['akses']    = $data['akses']; 
 
-        header("Location: dashboard.php");
+        header("Location: dashboard.php?page=awal");
         exit();
     } else {
         $error = "Username atau password salah.";

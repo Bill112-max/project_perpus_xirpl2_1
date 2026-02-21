@@ -102,7 +102,7 @@ button:hover{background:#0b5ed7}
 <input type="text" id="judul_buku" readonly required>
 
 <label>Jumlah Pinjam</label>
-<input type="number" name="jumlah" required>
+<input type="number" name="jumlah_pinjam" required>
 
 <label>Tanggal Pinjam</label>
 <input type="date" name="tgl_pinjam" required>

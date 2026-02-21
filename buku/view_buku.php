@@ -18,74 +18,103 @@ JOIN
 
 <head>
     <style>
-        body {
+/* === BODY === */
+body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f6f9;
+    background: linear-gradient(135deg, #eaf2ff, #f4f8ff);
     margin: 0;
     padding: 0;
 }
 
-/* Judul halaman */
+/* === JUDUL === */
 h2 {
     text-align: center;
-    margin: 30px 0;
-    font-size: 1.8rem;
+    margin: 35px 0;
+    font-size: 2rem;
+    font-weight: 700;
     color: #0d6efd;
+    letter-spacing: 0.5px;
 }
 
-/* Tombol tambah buku */
+/* === TOMBOL UMUM === */
 .btn {
     display: inline-block;
     margin-bottom: 20px;
-    padding: 10px 16px;
+    padding: 10px 18px;
     font-size: 0.95rem;
     font-weight: 600;
-    border-radius: 6px;
+    border-radius: 8px;
     text-decoration: none;
+    background: #0d6efd;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
 }
 
-/* Tabel styling */
+.btn:hover {
+    background: #0b5ed7;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(13, 110, 253, 0.3);
+}
+
+/* === TABEL === */
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fdfdfd; /* 1% lebih gelap dari putih */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    margin-bottom: 40px;
+    background-color: #ffffff;
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 50px;
 }
 
-/* Header tabel */
+/* === HEADER TABEL === */
 table th {
-    background-color: #e9ecef;
-    color: #333;
+    background: linear-gradient(135deg, #0d6efd, #3d8bfd);
+    color: white;
     font-weight: 600;
-    padding: 12px;
+    padding: 14px;
     text-align: left;
-    border-bottom: 2px solid #dee2e6;
+    font-size: 0.95rem;
 }
 
-/* Baris tabel */
+/* === ISI TABEL === */
 table td {
-    padding: 10px 12px;
-    border-bottom: 1px solid #dee2e6;
-    vertical-align: top;
-    color: #444;
+    padding: 12px 14px;
+    border-bottom: 1px solid #e3ecff;
+    vertical-align: middle;
+    color: #333;
+    font-size: 0.92rem;
 }
 
-/* Hover baris */
+/* === HOVER BARIS === */
+table tr {
+    transition: background 0.2s ease;
+}
+
 table tr:hover {
-    background-color: #f1f3f5;
+    background-color: #f0f6ff;
 }
 
-/* Tombol aksi */
+/* === TOMBOL AKSI DALAM TABEL === */
 table .btn-primary {
     padding: 6px 12px;
-    font-size: 0.85rem;
-    margin-right: 6px;
-    border-radius: 4px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    transition: 0.2s ease;
 }
 
-/* Responsif */
+table .btn-primary:hover {
+    background-color: #0b5ed7;
+    transform: scale(1.05);
+}
+
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
+
     table, thead, tbody, th, td, tr {
         display: block;
     }
@@ -96,14 +125,14 @@ table .btn-primary {
 
     table tr {
         margin-bottom: 15px;
-        border: 1px solid #dee2e6;
-        border-radius: 6px;
-        padding: 10px;
-        background-color: #fff;
+        border-radius: 10px;
+        padding: 12px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.08);
     }
 
     table td {
-        padding: 8px;
+        padding: 8px 0;
         text-align: left;
         position: relative;
     }
@@ -114,6 +143,7 @@ table .btn-primary {
         display: block;
         margin-bottom: 4px;
         color: #0d6efd;
+        font-size: 0.85rem;
     }
 }
     </style>
@@ -124,14 +154,14 @@ table .btn-primary {
 </head>
 
 <body>
+      <?php if ($tampil['akses'] == 'admin') { ?>
     <h2>Daftar Data buku</h2>
     <?php
 
-    if ($tampil['akses'] == 'admin') {
+  
         echo '<a href="?page=tambah_buku" class="btn btn-primary mb-3">
             <i class="bi bi-plus-circle"></i> Tambah Buku
           </a>';
-    }
     ?>
     <table border="1" cellpadding="5">
         <tr>
@@ -160,7 +190,7 @@ table .btn-primary {
 
                     <?php if ($tampil['akses'] == 'admin') { ?>
                         <a href="?page=edit_buku&id_buku=<?= $row['id_buku']; ?>" class="btn btn-primary mb-3">EDIT</a>
-                        <a href="?page=hapus_buku&id_buku=<?= $row['id_buku']; ?> " class="btn btn-primary mb-3" " onclick=" return confirm('Yakin ingin menghapus data ini?')">HAPUS</a>
+                        <a href="?page=hapus_buku&id_buku=<?= $row['id_buku']; ?> " class="btn btn-primary mb-3"  onclick=" return confirm('Yakin ingin menghapus data ini?')">HAPUS</a>
                 </td>
             <?php } else {
                         echo "Tidak ada aksi";
@@ -168,6 +198,297 @@ table .btn-primary {
             </tr>
         <?php } ?>
     </table>
+     <?php } ?>
 </body>
 
 </html>
+<?php if ($tampil['akses'] == 'anggota') { ?>
+
+<style>
+
+/* === CONTAINER GRID === */
+.shop-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 28px;
+    padding: 40px;
+}
+
+/* === CARD PRODUK === */
+.shop-card {
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.shop-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 35px rgba(0,0,0,0.15);
+}
+
+/* === GAMBAR BUKU === */
+.shop-img {
+    height: 260px;
+    overflow: hidden;
+}
+
+.shop-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.3s ease;
+}
+
+.shop-card:hover .shop-img img {
+    transform: scale(1.05);
+}
+
+/* === BODY CARD === */
+.shop-body {
+    padding: 18px;
+    flex: 1;
+}
+
+.shop-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #222;
+    height: 48px;
+    overflow: hidden;
+}
+
+.shop-info {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.shop-stock {
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: #0d6efd;
+    margin: 12px 0;
+}
+
+/* === BUTTON === */
+.btn-pinjam {
+    background: linear-gradient(135deg,#0d6efd,#084298);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: 0.2s ease;
+    display: block;
+}
+
+.btn-pinjam:hover {
+    opacity: 0.9;
+}
+
+h2 {
+    text-align:center;
+    margin-top:40px;
+    font-weight:700;
+}
+
+@media(max-width:600px){
+    .shop-container{
+        padding:20px;
+        gap:18px;
+    }
+
+    .shop-img{
+        height:200px;
+    }
+}
+
+</style>
+
+<?php if ($tampil['akses'] == 'anggota') { ?>
+
+<style>
+
+/* === CONTAINER GRID === */
+.shop-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 22px;
+    padding: 30px;
+}
+
+/* === CARD === */
+.shop-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.shop-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.12);
+}
+
+/* === IMAGE === */
+.shop-img {
+    height: 210px;   /* lebih kecil */
+    overflow: hidden;
+}
+
+.shop-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.3s ease;
+}
+
+.shop-card:hover .shop-img img {
+    transform: scale(1.05);
+}
+
+/* === BODY === */
+.shop-body {
+    padding: 14px;
+    flex: 1;
+}
+
+.shop-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #222;
+    height: 42px;
+    overflow: hidden;
+}
+
+.shop-info {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.shop-stock {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #0d6efd;
+    margin: 8px 0 12px 0;
+}
+
+/* === BUTTON WRAPPER === */
+.shop-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* === BUTTON DETAIL === */
+.btn-detail {
+    flex: 1;
+    background: #e9ecef;
+    color: #333;
+    text-align: center;
+    padding: 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: 0.2s;
+}
+
+.btn-detail:hover {
+    background: #d6d8db;
+}
+
+/* === BUTTON PINJAM === */
+.btn-pinjam {
+    flex: 1;
+    background: #0d6efd;
+    color: #fff;
+    text-align: center;
+    padding: 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: 0.2s;
+}
+
+.btn-pinjam:hover {
+    background: #084298;
+}
+
+h2 {
+    text-align:center;
+    margin-top:35px;
+    font-weight:700;
+}
+
+@media(max-width:600px){
+    .shop-container{
+        padding:15px;
+    }
+    .shop-img{
+        height:180px;
+    }
+}
+
+</style>
+
+<h2>Katalog Buku</h2>
+
+<div class="shop-container">
+
+<?php 
+mysqli_data_seek($data, 0);
+while ($row = mysqli_fetch_array($data)) { 
+?>
+    <div class="shop-card">
+
+        <div class="shop-img">
+            <?php if (!empty($row['gambar'])) { ?>
+                <img src="uploads/<?= $row['gambar']; ?>" alt="gambar buku">
+            <?php } else { ?>
+                <img src="uploads/default.jpg" alt="no image">
+            <?php } ?>
+        </div>
+
+        <div class="shop-body">
+
+            <div class="shop-title">
+                <?= $row['judul_buku']; ?>
+            </div>
+
+            <div class="shop-info">
+                <?= $row['kategori']; ?>
+            </div>
+
+            <div class="shop-stock">
+                Stok: <?= $row['jumlah_buku']; ?>
+            </div>
+
+            <div class="shop-buttons">
+                <a href="?page=detail_buku&id_buku=<?= $row['id_buku']; ?>" class="btn-detail">
+                    Detail
+                </a>
+
+                <a href="?page=pinjam_buku&id_buku=<?= $row['id_buku']; ?>" class="btn-pinjam">
+                    Pinjam
+                </a>
+            </div>
+
+        </div>
+    </div>
+<?php } ?>
+
+</div>
+
+<?php }}?>
+
+
