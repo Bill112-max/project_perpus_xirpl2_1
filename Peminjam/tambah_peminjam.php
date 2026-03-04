@@ -5,11 +5,13 @@ $buku = mysqli_query($koneksi,"
     SELECT 
         b.id_buku,
         b.judul_buku,
+        b.jumlah_buku,
         k.kategori,
         p.nama_penerbit
     FROM tbl_buku b
     LEFT JOIN tbl_kategori k ON b.id_kategori = k.id_kategori
     LEFT JOIN tbl_penerbit p ON b.id_penerbit = p.id_penerbit
+    WHERE b.jumlah_buku > 0
 ");
 ?>
 
@@ -38,7 +40,7 @@ input,select,button{
     margin:8px 0;
 }
 button{
-    background:#0d6efd;
+    background:#36903e;;
     color:#fff;
     border:none;
     cursor:pointer;
@@ -59,6 +61,16 @@ button:hover{background:#0b5ed7}
     background:#f1f1f1;
 }
 .small{font-size:12px;color:#555}
+
+/* GRID FORM */
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+.full{
+    grid-column:1/3;
+}
 </style>
 </head>
 
@@ -67,7 +79,6 @@ button:hover{background:#0b5ed7}
 <div class="box">
 <h2>Form Pengajuan Peminjaman</h2>
 
-<!-- MODE SEARCH -->
 <label>Cari Berdasarkan</label>
 <select id="mode">
     <option value="judul">Judul</option>
@@ -84,10 +95,12 @@ button:hover{background:#0b5ed7}
         data-judul="<?= strtolower($b['judul_buku']) ?>"
         data-kategori="<?= strtolower($b['kategori']) ?>"
         data-penerbit="<?= strtolower($b['nama_penerbit']) ?>"
+        data-stok="<?= $b['jumlah_buku'] ?>"
         onclick="pilihBuku(this)">
         <b><?= $b['judul_buku'] ?></b><br>
         <span class="small">
             <?= $b['kategori'] ?> | <?= $b['nama_penerbit'] ?>
+            <br>Stok : <b><?= $b['jumlah_buku'] ?></b>
         </span>
     </div>
 <?php } ?>
@@ -95,20 +108,39 @@ button:hover{background:#0b5ed7}
 
 <hr>
 
-<form method="post" action="dashboard.php?page=simpan_peminjam">
+<form method="post" action="dashboard.php?page=simpan_peminjam" onsubmit="return validasiPinjam()">
+
 <input type="hidden" name="id_buku" id="id_buku">
+<input type="hidden" id="stok_buku">
 
-<label>Buku Terpilih</label>
+<div class="grid">
+
+<div>
+<label>Judul (Sudah Dipilih)</label>
 <input type="text" id="judul_buku" readonly required>
+</div>
 
+<div>
+<label>Jumlah Buku</label>
+<input type="text" id="stok_tampil" readonly>
+</div>
+
+<div>
 <label>Jumlah Pinjam</label>
-<input type="number" name="jumlah_pinjam" required>
+<input type="number" name="jumlah_pinjam" id="jumlah_pinjam" required>
+</div>
 
+<div>
 <label>Tanggal Pinjam</label>
 <input type="date" name="tgl_pinjam" required>
+</div>
 
+<div class="full">
 <label>Tanggal Kembali</label>
 <input type="date" name="tgl_kembali" required>
+</div>
+
+</div>
 
 <button>Simpan</button>
 </form>
@@ -137,6 +169,20 @@ function pilihBuku(el){
     document.getElementById("id_buku").value = el.dataset.id;
     document.getElementById("judul_buku").value =
         el.querySelector("b").innerText;
+
+    document.getElementById("stok_buku").value = el.dataset.stok;
+    document.getElementById("stok_tampil").value = el.dataset.stok;
+}
+
+function validasiPinjam(){
+    let stok = parseInt(document.getElementById("stok_buku").value);
+    let pinjam = parseInt(document.getElementById("jumlah_pinjam").value);
+
+    if(pinjam > stok){
+        alert("Jumlah pinjam melebihi stok!");
+        return false;
+    }
+    return true;
 }
 </script>
 

@@ -81,65 +81,267 @@ if ($tableBuku) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f4f6f9;
-        }
 
-        /* Sidebar utama (sedikit lebih cerah) */
-        .sidebar {
-            min-height: 100vh;
-            background: linear-gradient(180deg, #0b0b0b 0%, #121212 100%); /* hitam yang sedikit lebih cerah */
-            color: #fff;
-            padding-top: 1rem;
-        }
+body {
+    background: #f1f3f4;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: #202124;
+}
 
-        .sidebar .profile {
-            display: flex; align-items: center; gap: .75rem;
-            padding: .6rem; border-radius: 8px; margin-bottom: 1rem;
-            background: rgba(255,255,255,0.02);
-        }
+/* ===== APPLE NAVBAR ===== */
+.navbar {
+    background: rgba(29, 116, 85, 0.75) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    padding: 10px 18px;
+}
 
-        .sidebar .avatar {
-            width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.06); color:#fff; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:1.05rem;
-            box-shadow:0 2px 6px rgba(0,0,0,0.18); border:2px solid rgba(255,255,255,0.9); transition: all .15s ease;
-        }
-        .sidebar .avatar:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
-        .sidebar .avatar.avatar-active { background: #0d6efd; border-color: #0d6efd; color: #fff; box-shadow: 0 8px 26px rgba(13,110,253,0.28); }
-        .sidebar .role { color: rgba(255,255,255,0.78); font-size:0.82rem; }
-        .sidebar .nav-link {
-            color: rgba(255,255,255,0.92); border-radius:6px; padding: .5rem .75rem; display:flex; align-items:center; gap:.6rem;
-        }
-        .sidebar .nav-link i { width:22px; text-align:center; }
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            background: rgba(255,255,255,0.08); color: #fff;
-            text-decoration: none;
-        }
-        .sidebar .badge {
-            background: rgba(255,255,255,0.12); color:#fff; font-weight:600; font-size:0.8rem;
-        }
-        .book-card .card { border-radius: 8px; overflow: hidden; }
-        .book-cover {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            display: block;
-            background-color: #f1f3f5;
-        }
-        .book-card .card-body { padding: .75rem; }
-        .book-card .card-title { font-size: 0.98rem; height: 48px; overflow: hidden; }
-        @media (max-width: 576px) {
-            .book-cover {
-                height: 140px; 
-            }
-            .sidebar { padding: .6rem; }
-            .sidebar .profile { padding: .4rem; }
-        }
-        .offcanvas-body .nav { padding-left:0; padding-right:0; }
-        .offcanvas .nav-link { color:#fff; }
-        .offcanvas .nav-link.active { background-color: rgba(255,255,255,0.08); color:#fff; }
-        .chart-container { width:100%; height:240px; }
-    </style> 
+/* Brand */
+.navbar-brand {
+    font-weight: 600;
+    color: #fff !important;
+    letter-spacing: 0.3px;
+}
+
+/* User Chip */
+#userDropdown {
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 6px 14px;
+    backdrop-filter: blur(10px);
+    transition: .25s ease;
+}
+
+#userDropdown:hover {
+    background: rgba(255,255,255,0.25);
+}
+.dropdown-menu {
+    margin-top: 12px !important;
+    border-radius: 22px;
+    border: none;
+    padding: 8px 0;
+    background: rgba(255,255,255,);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.15);
+    animation: iosDropdown .25s ease;
+}
+
+.dropdown-item {
+    padding: 10px 18px;
+    border-radius: 12px;
+}
+
+.dropdown-item:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+@keyframes iosDropdown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+/* ===== SIDEBAR MODERN GOOGLE STYLE ===== */
+.sidebar {
+    min-height: 125vh;
+    background: transparent;
+    padding: 20px 14px;
+}
+
+/* Inner Sidebar Card */
+.sidebar .p-3 {
+    background: #0a740a;
+    border-radius: 20px;
+    height: calc(100vh - 40px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+/* Profile */
+.sidebar .profile {
+    background: #549f4e;;
+    padding: 11px 14px;
+    margin-bottom: 18px;
+    border-radius: 18px;
+}
+
+.sidebar .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e8f0fe;
+    color: #1a73e8;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Menu */
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    color: #ffffff;
+    font-weight: 500;
+    position: relative;
+    transition: all .2s ease;
+}
+
+/* Hover */
+.sidebar .nav-link:hover {
+    background: #f1f3f4;
+    color: #0e9c0e;;
+}
+
+/* Active (GOOGLE STYLE PILL) */
+.sidebar .nav-link.active {
+    background: #e8f0fe;
+    color:  #0e9c0e;;
+    font-weight: 600;
+}
+
+/* Active Left Indicator */
+.sidebar .nav-link.active::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 6px;
+    bottom: 6px;
+    width: 4px;
+    background: #00ff62;
+    border-radius: 4px;
+}
+
+/* Icon */
+.sidebar .nav-link i {
+    font-size: 1.1rem;
+}
+
+/* Badge */
+.sidebar .badge {
+    margin-left: auto;
+    background: #1a73e8;
+    font-size: 0.7rem;
+}
+
+/* Collapse child */
+.sidebar .collapse .nav-link {
+    font-size: 0.92rem;
+    padding-left: 28px;
+}
+
+/* Logout */
+.sidebar .text-danger {
+    color: #d93025 !important;
+}
+
+/* Mobile Offcanvas */
+.offcanvas-body .nav-link {
+    border-radius: 12px;
+    margin-bottom: 4px;
+}
+
+.offcanvas .nav-link.active {
+    background: #e8f0fe;
+    color: #1a73e8;
+}
+
+/* ===== CARD ===== */
+.card {
+    border: none;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(60,64,67,.15);
+    transition: .2s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(60,64,67,.2);
+}
+
+/* ===== STAT ICON ===== */
+.card-body .bg-primary,
+.card-body .bg-info,
+.card-body .bg-warning,
+.card-body .bg-success {
+    background: #e8f0fe !important;
+    color: #1a73e8 !important;
+    border-radius: 12px;
+}
+
+/* ===== BOOK CARD ===== */
+.book-card .card {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.book-card .card:hover {
+    transform: translateY(-4px);
+}
+
+.book-cover {
+    height: 190px;
+    object-fit: cover;
+    background: #f1f3f4;
+}
+
+/* ===== BUTTON ===== */
+.btn-primary {
+    background: #1a73e8;
+    border: none;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background: #1765cc;
+}
+
+/* ===== CHART ===== */
+.chart-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 12px;
+}
+
+/* ===== OFFCANVAS ===== */
+.offcanvas {
+    background: #ffffff;
+}
+
+.offcanvas .nav-link {
+    color: #5f6368;
+}
+
+.offcanvas .nav-link.active {
+    background: #e8f0fe;
+    color: #1a73e8;
+}
+
+/* ===== TEXT ===== */
+h4, h5 {
+    font-weight: 600;
+}
+
+small {
+    color: #ffffff;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 576px) {
+    .book-cover {
+        height: 150px;
+    }
+}
+
+</style>
 </head>
 
 <body>
@@ -147,7 +349,7 @@ if ($tableBuku) {
    <?php $initial = !empty($tampil['nama']) ? strtoupper(mb_substr($tampil['nama'],0,1)) : 'U'; ?>
 
 <!-- NAVBAR -->
-<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
         <button class="btn btn-primary d-md-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
             <i class="bi bi-list"></i>
@@ -385,7 +587,11 @@ if ($tableBuku) {
                                 </div>
                             </div>
                         </div>
-
+      <?php if ($tampil['akses'] == 'anggota') { ?>
+      <div class="d-flex justify-content-center mt-4">
+     <a href="?page=buku" class="btn btn-sm btn-success" style="width: 350px; justify-content: center; border-radius: 10px; font-size: 20px;">Lihat semua Buku</a>
+      </div>
+     <?php } ?>
                     </div>
                     <?php
                 } elseif ($page == "profile") {
@@ -399,7 +605,9 @@ if ($tableBuku) {
                 } elseif ($page == "edit_buku") {
                     include "buku/edit_buku.php";
                 } elseif ($page == "hapus_buku") {
-                    include "buku/hapus_buku.php";     
+                    include "buku/hapus_buku.php"; 
+                 } elseif ($page == "detail_buku") {
+                    include "buku/detail_buku.php";     
 
                  } elseif ($page == "kategori") {
                     include "kategori/view_kategori.php";
@@ -488,3 +696,5 @@ if ($tableBuku) {
 </body>
 
 </html>
+
+

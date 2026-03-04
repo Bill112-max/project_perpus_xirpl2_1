@@ -16,7 +16,7 @@ $sql = "INSERT INTO tbl_penerbit (id_penerbit, nama_penerbit, no_tlp_penerbit, n
         VALUES ('$id_penerbit', '$nama_penerbit', '$no_tlp_penerbit', '$nama_sales', '$no_tlp_sales')";
 
 if (mysqli_query($koneksi, $sql)) {
-    echo "✅ Data berhasil disimpan. <a href='view_penerbit.php'>Lihat Data</a>";
+    echo "✅ Data berhasil disimpan. <a href='dashboard.php?page=view_penerbit'>Lihat Data</a>";
 } else {
     echo "❌ Error: " . mysqli_error($koneksi);
 }

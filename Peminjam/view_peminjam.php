@@ -33,7 +33,7 @@ if ($_SESSION['akses'] === 'anggota') {
     <title>Daftar Data Peminjam</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; margin: 0; padding: 0; }
-        h2 { text-align: center; margin: 30px 0; font-size: 1.8rem; color: #0d6efd; }
+        h2 { text-align: center; margin: 30px 0; font-size: 1.8rem; color: #359e37; }
         table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 40px; }
         th, td { padding: 12px; border-bottom: 1px solid #dee2e6; text-align: left; }
         th { background: #e9ecef; font-weight: 600; }
@@ -50,7 +50,7 @@ if ($_SESSION['akses'] === 'anggota') {
 <body>
     <h2>Daftar Data Peminjam</h2>
     <?php if ($_SESSION['akses'] === 'anggota') { ?>
-        <a href="?page=tambah_peminjam" class="btn btn-primary mb-3">
+        <a href="?page=tambah_peminjam" class="btn btn-success mb-3">
             <i class="bi bi-plus-circle"></i> Tambah Buku
         </a>
     <?php } ?>

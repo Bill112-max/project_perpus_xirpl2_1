@@ -7,124 +7,149 @@ if ($tampil['akses'] != 'admin') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Input Form</title>
+
 <style>
-    body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f6f9;
+body {
+    font-family: 'Segoe UI', Tahoma;
+    background: #f4f6f9;
     margin: 0;
-    padding: 0;
 }
 
 .wrapper {
-    max-width: 700px;
+    max-width: 950px;
     margin: 40px auto;
-    background-color: #fff;
+    background: #fff;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-.wrapper h1 {
-    text-align: center;
-    font-size: 1.8rem;
-    margin-bottom: 30px;
-    color: #0d6efd;
-}
-.wrapper label {
-    font-weight: 600;
-    margin-bottom: 6px;
-    display: block;
-    color: #333;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-.wrapper input[type="text"],
+.wrapper h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #0d6efd;
+}
+
+/* GRID 6 KOLOM */
+.wrapper form {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+}
+
+/* INPUT */
+.wrapper input,
 .wrapper textarea,
 .wrapper select {
     width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 20px;
+    padding: 10px;
     border: 1px solid #ced4da;
     border-radius: 8px;
-    font-size: 0.95rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.wrapper input:focus,
-.wrapper textarea:focus,
-.wrapper select:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
-    outline: none;
-}
+/* FULL */
+.full { grid-column: span 6; }
 
+/* 2 KOLOM */
+.half { grid-column: span 3; }
+
+/* JUMLAH TERASA LEBAR */
+.big-half { grid-column: span 3; }
+
+/* 3 KOLOM */
+.third { grid-column: span 2; }
+
+/* BUTTON */
 .wrapper button {
-    width: 100%;
+    grid-column: span 6;
     padding: 12px;
-    background-color: #0d6efd;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 600;
+    background: #0d6efd;
+    color: white;
     border: none;
     border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
-.wrapper button:hover {
-    background-color: #0b5ed7;
+
+/* FILE */
+.wrapper input[type="file"] {
+    padding: 6px;
+    background: #f8f9fa;
+    border: 1px dashed #ced4da;
 }
-@media (max-width: 768px) {
-    .wrapper {
-        margin: 20px;
-        padding: 20px;
+
+/* MOBILE */
+@media(max-width:768px){
+    .wrapper form {
+        grid-template-columns: 1fr;
+    }
+    .full, .half, .big-half, .third {
+        grid-column: span 1;
     }
 }
 </style>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Form</title>
-    <link rel="stylesheet" href="../css/tambah.css">
 </head>
 
 <body>
-    <div class="wrapper">
-        <h1> Input data buku </h1>
-        <form action="dashboard.php?page=simpan_buku" method="post">
-            <label>id buku:</label><br>
-            <input type="text" name="id_buku" required><br><br>
-            <label>Judul Buku:</label><br>
-            <input type="text" name="judul_buku" required><br><br>
-            <label>Sinopsis:</label><br>
-            <textarea name="sinopsis"></textarea><br><br>
-            <label>Jumlah halaman:</label><br>
-            <input type="text" name="jumlah_halaman"><br><br>
-            <label>Jumlah buku:</label><br>
-            <input type="text" name="jumlah_buku"><br><br>
-            <label>kategori(id):</label><br>
-            <select name="id_kategori" required>
-                <option value="">-- Pilih Kategori --</option>
-                <?php
-                $kategori = mysqli_query($koneksi, "SELECT * FROM tbl_kategori ORDER BY kategori ASC");
-                while ($row = mysqli_fetch_assoc($kategori)) {
-                    echo "<option value='{$row['id_kategori']}'>{$row['id_kategori']} - {$row['kategori']}</option>";
-                }
-                ?>
-            </select><br><br>
-            <label>penerbit(id):</label><br>
-            <select name="id_penerbit" required>
-                <option value="">-- Pilih penerbit --</option>
-                <?php
-                $penerbit = mysqli_query($koneksi, "SELECT * FROM tbl_penerbit ORDER BY nama_penerbit ASC");
-                while ($row = mysqli_fetch_assoc($penerbit)) {
-                    echo "<option value='{$row['id_penerbit']}'>{$row['id_penerbit']} - {$row['nama_penerbit']}</option>";
-                }
-                ?>
-            </select><br><br>
-            <label>Tahun terbit:</label><br>
-            <input type="text" name="tahun_terbit" required><br><br>
+<div class="wrapper">
+<h1>Input Data Buku</h1>
 
-            <button type="submit">Simpan</button>
-        </form>
-    </div>
+<form action="dashboard.php?page=simpan_buku" method="post" enctype="multipart/form-data">
+
+<!-- ID & NAMA -->
+<label class="half">ID Buku</label>
+<label class="half">Nama Buku</label>
+
+<input class="half" type="text" name="id_buku" required>
+<input class="half" type="text" name="judul_buku" required>
+
+<!-- SINOPSIS -->
+<label class="full">Sinopsis</label>
+<textarea class="full" name="sinopsis"></textarea>
+
+<!-- JUMLAH -->
+<label class="big-half">Jumlah Halaman</label>
+<label class="big-half">Jumlah Buku</label>
+
+<input class="big-half" type="text" name="jumlah_halaman">
+<input class="big-half" type="text" name="jumlah_buku">
+
+<!-- 3 KOLOM -->
+<label class="third">Kategori</label>
+<label class="third">Penerbit</label>
+<label class="third">Tahun Terbit</label>
+
+<select class="third" name="id_kategori" required>
+<option value="">-- Pilih --</option>
+<?php
+$kategori = mysqli_query($koneksi, "SELECT * FROM tbl_kategori ORDER BY kategori ASC");
+while ($row = mysqli_fetch_assoc($kategori)) {
+echo "<option value='{$row['id_kategori']}'>{$row['id_kategori']} - {$row['kategori']}</option>";
+}
+?>
+</select>
+
+<select class="third" name="id_penerbit" required>
+<option value="">-- Pilih --</option>
+<?php
+$penerbit = mysqli_query($koneksi, "SELECT * FROM tbl_penerbit ORDER BY nama_penerbit ASC");
+while ($row = mysqli_fetch_assoc($penerbit)) {
+echo "<option value='{$row['id_penerbit']}'>{$row['id_penerbit']} - {$row['nama_penerbit']}</option>";
+}
+?>
+</select>
+
+<input class="third" type="text" name="tahun_terbit" required>
+
+<!-- COVER -->
+<label class="full">Cover Buku</label>
+<input class="full" type="file" name="cover_buku" accept="image/*">
+
+<button type="submit">Simpan</button>
+
+</form>
+</div>
 </body>
-
 </html>

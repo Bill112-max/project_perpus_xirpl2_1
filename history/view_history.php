@@ -52,10 +52,10 @@ if ($akses_login === 'admin') {
     <title>History Peminjaman</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; margin: 0; padding: 0; }
-        h2 { text-align: center; margin: 30px 0; font-size: 1.8rem; color: #0d6efd; }
+        h2 { text-align: center; margin: 30px 0; font-size: 1.8rem; color: #12892a; }
         form { text-align: center; margin-bottom: 20px; }
         input[type="text"] { padding: 8px; width: 200px; }
-        button { padding: 8px 12px; background: #0d6efd; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button { padding: 8px 12px; background: #12892a; color: white; border: none; border-radius: 4px; cursor: pointer; }
         table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 40px; }
         th, td { padding: 12px; border-bottom: 1px solid #dee2e6; text-align: left; }
         th { background: #e9ecef; font-weight: 600; }

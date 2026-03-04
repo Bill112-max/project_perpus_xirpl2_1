@@ -13,7 +13,7 @@ if (!isset($_SESSION['username'])) {
         <div class="col-md-6">
 
             <div class="card shadow-sm border-0">
-                <div class="card-header bg-primary text-white text-center">
+                <div class="card-header bg-success text-white text-center">
                     <i class="bi bi-person-circle fs-2"></i>
                     <h5 class="mt-2 mb-0">Profil Pengguna</h5>
                 </div>

@@ -1,192 +1,211 @@
 <?php
 include __DIR__ . '/../inc/conect.php';
+
 $id_buku = $_GET['id_buku'];
 $result = mysqli_query($koneksi, "SELECT * FROM tbl_buku WHERE id_buku='$id_buku'");
 $buku = mysqli_fetch_array($result);
 
 if (!$buku) {
-    die("Data buku dengan id buku $id_buku tidak ditemukan.");
+    die("Data tidak ditemukan");
 }
 
 if (isset($_POST['update'])) {
-    $id_buku    = $_POST['id_buku'];
+
     $judul_buku  = $_POST['judul_buku'];
-    $gambar_buku  = $_POST['gambar_buku'];
     $sinopsis    = $_POST['sinopsis'];
     $jumlah_halaman = $_POST['jumlah_halaman'];
     $jumlah_buku  = $_POST['jumlah_buku'];
     $id_kategori  = $_POST['id_kategori'];
     $id_penerbit  = $_POST['id_penerbit'];
-    $thn_terbit   = $_POST['tahun_terbit'];
+    $tahun_terbit = $_POST['tahun_terbit'];
+    $gambar_lama  = $_POST['gambar_lama'];
 
-    $sql = "UPDATE tbl_buku 
-            SET judul_buku='$judul_buku',
-                gambar_buku='$gambar_buku',
-                sinopsis='$sinopsis',
-                jumlah_halaman='$jumlah_halaman',
-                jumlah_buku='$jumlah_buku'
-            WHERE id_buku='$id_buku'";
+    // CEK upload gambar baru
+    if ($_FILES['gambar_buku']['name'] != "") {
 
-    if (mysqli_query($koneksi, $sql)) {
-        echo "<script>
-                alert('✅ Data berhasil diperbarui!');
-                window.location.href='dashboard.php?page=buku';
-              </script>";
+        $namaFile = $_FILES['gambar_buku']['name'];
+        $tmp      = $_FILES['gambar_buku']['tmp_name'];
+
+        move_uploaded_file($tmp, "../upload/".$namaFile);
+
+        $gambar = $namaFile;
+
     } else {
-        echo "❌ Gagal mengupdate data: " . mysqli_error($koneksi);
+        $gambar = $gambar_lama;
     }
+
+    mysqli_query($koneksi,"UPDATE tbl_buku SET 
+        judul_buku='$judul_buku',
+        sinopsis='$sinopsis',
+        jumlah_halaman='$jumlah_halaman',
+        jumlah_buku='$jumlah_buku',
+        id_kategori='$id_kategori',
+        id_penerbit='$id_penerbit',
+        tahun_terbit='$tahun_terbit',
+        gambar_buku='$gambar'
+        WHERE id_buku='$id_buku'
+    ");
+
+    echo "<script>
+        alert('Data berhasil diupdate');
+        window.location='dashboard.php?page=buku';
+    </script>";
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
-<style>
-    /* Reset dasar */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Segoe UI", Arial, sans-serif;
-    }
-
-    /* Wrapper utama */
-    .wrapper {
-        max-width: 700px;
-        margin: 50px auto;
-        background: #fdfdfd;
-        padding: 40px;
-        border-radius: 14px;
-        border: 1px solid #e0e0e0;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    }
-
-    /* Judul */
-    .wrapper h2 {
-        text-align: center;
-        margin-bottom: 30px;
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #0d6efd;
-        letter-spacing: 0.5px;
-    }
-
-    /* Label */
-    .wrapper label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: #444;
-    }
-
-    /* Input & Textarea */
-    .wrapper input[type="text"],
-    .wrapper textarea,
-    .wrapper select {
-        width: 100%;
-        padding: 12px 14px;
-        margin-bottom: 20px;
-        border: 1px solid #d0d0d0;
-        border-radius: 10px;
-        font-size: 1rem;
-        background: #fff;
-        transition: all 0.3s ease;
-    }
-
-    .wrapper input[type="text"]:focus,
-    .wrapper textarea:focus,
-    .wrapper select:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 8px rgba(13, 110, 253, 0.25);
-        outline: none;
-    }
-
-    /* Tombol */
-    .wrapper button {
-        width: 100%;
-        padding: 14px;
-        background: linear-gradient(135deg, #0d6efd, #0b5ed7);
-        color: #fff;
-        font-size: 1.05rem;
-        font-weight: 600;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: transform 0.2s ease, background 0.3s ease;
-    }
-
-    .wrapper button:hover {
-        background: linear-gradient(135deg, #0b5ed7, #094db5);
-        transform: translateY(-2px);
-    }
-
-    /* Responsif */
-    @media (max-width: 768px) {
-        .wrapper {
-            margin: 20px;
-            padding: 25px;
-        }
-
-        .wrapper h2 {
-            font-size: 1.5rem;
-        }
-    }
-</style>
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Data Buku</title>
-    <link rel="stylesheet" href="../css/Edit.css">
+<meta charset="UTF-8">
+<title>Edit Buku</title>
+<style>
+
+body{
+    font-family:Segoe UI;
+    background:#f5f8ff;
+}
+
+.wrapper{
+    max-width:700px;
+    margin:40px auto;
+    padding:25px;
+    background:#fff;
+    border-radius:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:#0d6efd;
+}
+
+/* GRID */
+.form-row{
+    display:grid;
+    grid-template-columns:1fr 2fr;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.form-row-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.form-row-3{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+input, textarea, select{
+    width:100%;
+    padding:8px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+textarea{
+    resize:none;
+}
+
+img.preview{
+    width:90px;
+    margin-top:10px;
+    border-radius:6px;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#0d6efd;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0b5ed7;
+}
+
+@media(max-width:768px){
+    .form-row,
+    .form-row-2,
+    .form-row-3{
+        grid-template-columns:1fr;
+    }
+}
+
+</style>
 </head>
 
 <body>
 
-    <div class="wrapper">
-        <h2>Edit Data buku</h2>
-        <form method="POST">
-            <label>id buku</label>
-            <input type="text" name="id_buku" value="<?php echo $buku['id_buku']; ?>" readonly>
-            <label>judul buku </label>
-            <input type="text" name="judul_buku" value="<?php echo $buku['judul_buku']; ?>" required>
-            <label>sinopsis</label>
-            <textarea name="sinopsis" rows="4"><?php echo $buku['sinopsis']; ?></textarea>
-            <label>jumlah halaman</label>
-            <input type="text" name="jumlah_halaman" value="<?php echo $buku['jumlah_halaman']; ?>" required>
-            <label>jumlah buku</label>
-            <input type="text" name="jumlah_buku" value="<?php echo $buku['jumlah_buku']; ?>" required>
-            <label>Gambar cover buku</label><br>
-            <input type="file" name="gambar_buku" accept=".jpg,.jpeg,.png "value="<?php echo $buku['gambar_buku']; ?>" required><br><br>
-            <label>Kategori (id):</label><br>
-            <select name="id_kategori" required>
-                <option value="">-- Pilih Kategori --</option>
-                <?php
-                $kategori = mysqli_query($koneksi, "SELECT * FROM tbl_kategori ORDER BY kategori ASC");
-                while ($row = mysqli_fetch_assoc($kategori)) {
-                    // cek apakah id_kategori dari buku sama dengan id_kategori dari tabel kategori
-                    $selected = ($row['id_kategori'] == $buku['id_kategori']) ? "selected" : "";
-                    echo "<option value='{$row['id_kategori']}' $selected>{$row['id_kategori']} - {$row['kategori']}</option>";
-                }
-                ?>
-            </select><br><br>
+<div class="wrapper">
+<h2>Edit Buku</h2>
 
-            <label>Penerbit (id):</label><br>
-            <select name="id_penerbit" required>
-                <option value="">-- Pilih Penerbit --</option>
-                <?php
-                $penerbit = mysqli_query($koneksi, "SELECT * FROM tbl_penerbit ORDER BY nama_penerbit ASC");
-                while ($row = mysqli_fetch_assoc($penerbit)) {
-                    $selected = ($row['id_penerbit'] == $buku['id_penerbit']) ? "selected" : "";
-                    echo "<option value='{$row['id_penerbit']}' $selected>{$row['id_penerbit']} - {$row['nama_penerbit']}</option>";
-                }
-                ?>
-            </select><br><br>
+<form method="POST" enctype="multipart/form-data">
 
-            <label>tahun terbit</label>
-            <input type="text" name="tahun_terbit" value="<?php echo $buku['tahun_terbit']; ?>" readonly>
-            <button type="submit" name="update">Simpan Perubahan</button>
-        </form>
-    </div>
+<input type="hidden" name="gambar_lama" value="<?= $buku['gambar_buku'] ?>">
+
+<!-- ID || JUDUL -->
+<div class="form-row">
+    <input type="text" value="<?= $buku['id_buku'] ?>" readonly>
+    <input type="text" name="judul_buku" value="<?= $buku['judul_buku'] ?>" required>
+</div>
+
+<!-- SINOPSIS -->
+<textarea name="sinopsis" rows="3"><?= $buku['sinopsis'] ?></textarea>
+
+<!-- JUMLAH -->
+<div class="form-row-2">
+    <input type="text" name="jumlah_buku" value="<?= $buku['jumlah_buku'] ?>" placeholder="Jumlah Buku">
+    <input type="text" name="jumlah_halaman" value="<?= $buku['jumlah_halaman'] ?>" placeholder="Jumlah Halaman">
+</div>
+
+<!-- KATEGORI | PENERBIT | TAHUN -->
+<div class="form-row-3">
+
+<select name="id_kategori">
+<?php
+$kategori = mysqli_query($koneksi,"SELECT * FROM tbl_kategori");
+while($k = mysqli_fetch_assoc($kategori)){
+$sel = ($k['id_kategori']==$buku['id_kategori']) ? "selected":"";
+echo "<option value='$k[id_kategori]' $sel>$k[kategori]</option>";
+}
+?>
+</select>
+
+<select name="id_penerbit">
+<?php
+$penerbit = mysqli_query($koneksi,"SELECT * FROM tbl_penerbit");
+while($p = mysqli_fetch_assoc($penerbit)){
+$sel = ($p['id_penerbit']==$buku['id_penerbit']) ? "selected":"";
+echo "<option value='$p[id_penerbit]' $sel>$p[nama_penerbit]</option>";
+}
+?>
+</select>
+
+<input type="text" name="tahun_terbit" value="<?= $buku['tahun_terbit'] ?>">
+
+</div>
+
+<!-- COVER -->
+<label>Gambar Cover</label>
+<input type="file" name="gambar_buku">
+
+<img src="../upload/<?= $buku['gambar_buku'] ?>" class="preview">
+
+<br><br>
+<button type="submit" name="update">Simpan</button>
+
+</form>
+</div>
 
 </body>
-
 </html>
