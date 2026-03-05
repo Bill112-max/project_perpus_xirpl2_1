@@ -45,12 +45,12 @@ $data = mysqli_fetch_assoc($result);
         display: flex;
         align-items: center;
         margin-bottom: 12px;
-        gap: 20px; /* jarak antar item */
+        gap: 20px;
     }
     .detail-row div {
         display: flex;
         align-items: center;
-        gap: 8px; /* jarak label dan nilai */
+        gap: 8px;
     }
     .detail-row strong {
         color: #495057;
@@ -85,17 +85,35 @@ $data = mysqli_fetch_assoc($result);
         background: #e9ecef;
         border-radius: 12px;
         overflow: hidden;
+        min-height: 250px;
     }
     .book-image img {
-        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
         border-radius: 12px;
+    }
+    .book-image span {
+        color: #aaa;
+        font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+        .wrapper {
+            flex-direction: column;
+        }
+        .book-image {
+            min-height: 200px;
+        }
     }
 </style>
 </head>
 <body>
 <div class="wrapper">
+
     <div class="book-info">
         <h1>Detail Buku</h1>
+
         <div class="detail-row">
             <div><strong>Judul:</strong> <span><?= $data['judul_buku'] ?></span></div>
         </div>
@@ -107,19 +125,24 @@ $data = mysqli_fetch_assoc($result);
             <div><strong>Jumlah Halaman:</strong> <span><?= $data['jumlah_halaman'] ?></span></div>
             <div><strong>Stok:</strong> <span><?= $data['jumlah_buku'] ?></span></div>
         </div>
+
         <div class="sinopsis">
             <strong>Sinopsis:</strong><br>
             <?= nl2br($data['sinopsis']) ?>
         </div>
-        <a href="view_buku.php" class="btn">⬅ Kembali ke Daftar Buku</a>
+
+        <a href="dashboard.php?page=buku" class="btn">⬅ Kembali ke Daftar Buku</a>
     </div>
+
+    <!-- GAMBAR COVER -->
     <div class="book-image">
-        <?php if(!empty($data['gambar'])): ?>
-            <img src="../uploads/<?= $data['gambar'] ?>" alt="Cover Buku">
+        <?php if (!empty($data['gambar_buku'])): ?>
+           <img src="uploads/buku/<?= $data['gambar_buku'] ?>" alt="Cover Buku">
         <?php else: ?>
-            <span>GAMBAR</span>
+            <span>Belum ada cover</span>
         <?php endif; ?>
     </div>
+
 </div>
 </body>
 </html>

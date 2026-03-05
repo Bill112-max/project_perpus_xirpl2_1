@@ -52,7 +52,7 @@ if (isset($_POST['Register'])) {
         $error_signup = "Semua field wajib diisi.";
     } else {
         $insert = mysqli_query($koneksi,
-            "INSERT INTO tbl_users (name, username, email, telepon, password, akses)
+            "INSERT INTO tbl_users (nama, username, email, no_tlp, password, akses)
              VALUES ('$name','$username','$email','$telepon','$password','$akses')"
         );
         if ($insert) {

@@ -137,7 +137,7 @@ button:hover{background:#0b5ed7}
 
 <div class="full">
 <label>Tanggal Kembali</label>
-<input type="date" name="tgl_kembali" required>
+<input type="date" name="tanggal_kembali" required>
 </div>
 
 </div>
