@@ -1,0 +1,8 @@
+Admin
+Username    : billy
+pass        : 1234
+
+
+anggota = bisa create akun sendiri 
+Username    : JKO
+pass        : 12344

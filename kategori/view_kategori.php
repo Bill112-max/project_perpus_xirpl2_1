@@ -29,7 +29,7 @@ body {
 h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #0d6efd;
+    color: #409e66;
     font-weight: 600;
 }
 
@@ -40,8 +40,8 @@ h2 {
 }
 
 .top-bar a {
-    background: #0d6efd;
-    color: #fff;
+    background: #4a9143;
+    color: #ffffff;
     padding: 10px 16px;
     text-decoration: none;
     border-radius: 6px;
@@ -51,7 +51,7 @@ h2 {
 }
 
 .top-bar a:hover {
-    background: #0b5ed7;
+    background: #417150;
 }
 
 /* TABLE */
@@ -64,7 +64,7 @@ table {
 }
 
 th {
-    background: #0d6efd;
+    background: #4b9044;
     color: #fff;
     padding: 12px;
     text-align: left;

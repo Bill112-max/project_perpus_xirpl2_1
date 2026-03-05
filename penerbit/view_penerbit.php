@@ -28,7 +28,7 @@ $data = mysqli_query($koneksi, "SELECT * FROM tbl_penerbit");
         h2 {
             text-align: center;
             margin-bottom: 20px;
-            color: #0d6efd;
+            color: #48804f;
             font-weight: 600;
         }
 
@@ -39,7 +39,7 @@ $data = mysqli_query($koneksi, "SELECT * FROM tbl_penerbit");
         }
 
         .top-bar a {
-            background: #0d6efd;
+            background: #4ba03e;
             color: #fff;
             padding: 10px 16px;
             text-decoration: none;
@@ -50,7 +50,7 @@ $data = mysqli_query($koneksi, "SELECT * FROM tbl_penerbit");
         }
 
         .top-bar a:hover {
-            background: #0b5ed7;
+            background: #2c5134;
         }
 
         /* TABLE */
@@ -63,7 +63,7 @@ $data = mysqli_query($koneksi, "SELECT * FROM tbl_penerbit");
         }
 
         th {
-            background: #0d6efd;
+            background: #48804f;
             color: #fff;
             padding: 12px;
             text-align: left;
